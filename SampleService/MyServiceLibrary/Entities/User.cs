@@ -1,5 +1,4 @@
-﻿using MyServiceLibrary.Interfaces;
-using MyServiceLibrary.Interfaces.Entities;
+﻿using MyServiceLibrary.Interfaces.Entities;
 using System;
 
 namespace MyServiceLibrary.Entities
@@ -49,24 +48,14 @@ namespace MyServiceLibrary.Entities
                 int hash = (int)2166136261;
 
                 hash = (hash * 16777619) ^ Id.GetHashCode();
-                hash = (hash * 16777619) ^ CheckOnNull(PersonalId);
-                hash = (hash * 16777619) ^ CheckOnNull(FirstName);
-                hash = (hash * 16777619) ^ CheckOnNull(LastName);
+                hash = (hash * 16777619) ^ (PersonalId?.GetHashCode() ?? 0);
+                hash = (hash * 16777619) ^ (FirstName?.GetHashCode() ?? 0);
+                hash = (hash * 16777619) ^ (LastName?.GetHashCode() ?? 0);
                 hash = (hash * 16777619) ^ DateOfBirth.GetHashCode();
                 hash = (hash * 16777619) ^ Gender.GetHashCode();
 
                 return hash;
             }
-        }
-        #endregion
-
-        #region Private methods
-        private int CheckOnNull(object obj)
-        {
-            if (obj == null)
-                return 0;
-
-            return obj.GetHashCode();
         }
         #endregion
     }
