@@ -1,4 +1,5 @@
 ﻿using MyServiceLibrary.Interfaces;
+using MyServiceLibrary.Interfaces.Entities;
 using System;
 
 namespace MyServiceLibrary.Entities
