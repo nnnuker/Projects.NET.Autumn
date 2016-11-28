@@ -1,4 +1,5 @@
 ﻿using MyServiceLibrary;
+using MyServiceLibrary.Repositories;
 
 namespace ServiceApplication
 {
