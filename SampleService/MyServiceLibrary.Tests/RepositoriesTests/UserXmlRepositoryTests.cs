@@ -4,6 +4,7 @@ using MyServiceLibrary.Repositories;
 using MyServiceLibrary.Entities;
 using MyServiceLibrary.Interfaces;
 using System.Linq;
+using MyServiceLibrary.Exceptions;
 
 namespace MyServiceLibrary.Tests.RepositoriesTests
 {
@@ -54,9 +55,10 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
         }
 
         [TestMethod]
-        public void Add_UserWhileAlreadyExists_False()
+        [ExpectedException(typeof(UserAlreadyExistsException))]
+        public void Add_UserWhileAlreadyExists_ExceptionThrow()
         {
-            Assert.IsFalse(repository.Add(user) != null);
+            repository.Add(user);
         }
 
         [TestMethod]
@@ -97,8 +99,8 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
             repository.Add(new User()
             {
                 Id = 2,
-                FirstName = "Petr",
-                LastName = "The greatest",
+                FirstName = "Aliaksandr",
+                LastName = "I",
                 PersonalId = "PiterSaint",
                 DateOfBirth = DateTime.MinValue,
                 Visas = new VisaRecord[] { new VisaRecord() { Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue } },
@@ -108,12 +110,12 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
             repository.Add(new User()
             {
                 Id = 3,
-                FirstName = "Petr",
+                FirstName = "Petra",
                 LastName = "The greatest",
                 PersonalId = "PiterSaint",
                 DateOfBirth = DateTime.MinValue,
-                Visas = new VisaRecord[] { new VisaRecord() { Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue } },
-                Gender = GenderEnum.Male
+                Visas = new VisaRecord[] { new VisaRecord() { Country = "Europe", Start = DateTime.MinValue, End = DateTime.MaxValue } },
+                Gender = GenderEnum.Female
             });
 
             repository.Save();

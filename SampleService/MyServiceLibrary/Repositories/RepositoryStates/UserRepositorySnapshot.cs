@@ -6,8 +6,8 @@ namespace MyServiceLibrary.Repositories.RepositoryStates
 {
     public class UserRepositorySnapshot
     {
-        public List<User> Users { get; set; }
         public int LastId { get; set; }
+        public List<User> Users { get; set; }
 
         public UserRepositorySnapshot()
         {

@@ -85,7 +85,7 @@ namespace MyServiceLibrary.Repositories
 
             using (FileStream fs = new FileStream(filePath, FileMode.Create))
             {
-                formatter.Serialize(fs, users);
+                formatter.Serialize(fs, snapshot);
             }
 
             return true;
