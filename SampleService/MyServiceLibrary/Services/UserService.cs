@@ -14,26 +14,19 @@ namespace MyServiceLibrary.Services
     public class UserService : IService<User>
     {
         private readonly IRepository<User> repository;
-        private readonly IGenerator<int> idGenerator;
         private readonly IValidator<User> validator;
 
         public UserService()
         {
             repository = new UserXmlRepository();
-            idGenerator = new IdGenerator();
             validator = new UserValidator();
         }
 
-        public UserService(IRepository<User> repository, IGenerator<int> idGenerator, IValidator<User> validator)
+        public UserService(IRepository<User> repository, IValidator<User> validator)
         {
             if (repository == null)
             {
                 throw new ArgumentNullException("Repository is null");
-            }
-
-            if (idGenerator == null)
-            {
-                throw new ArgumentNullException("Id generator is null");
             }
 
             if (validator == null)
@@ -45,9 +38,6 @@ namespace MyServiceLibrary.Services
             repository.Load();
 
             this.validator = validator;
-
-            this.idGenerator = idGenerator;
-            idGenerator.Initialize(repository.GetAll().Max(u => u.Id));
         }
 
         public User Add(User user)
@@ -61,13 +51,7 @@ namespace MyServiceLibrary.Services
             {
                 throw new UserValidationException("User is invalid");
             }
-
-            if (repository.GetByPredicate(u => u.Equals(user)).Count > 0)
-            {
-                throw new UserAlreadyExistsException("User already exists");
-            }
-
-            user.Id = idGenerator.GetNext();
+            
             repository.Add(user);
 
             return user;

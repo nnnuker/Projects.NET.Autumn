@@ -52,6 +52,7 @@
     <Compile Include="Interfaces\Infrastructure\IValidator.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Repositories\RepositoryStates\UserRepositorySnapshot.cs" />
     <Compile Include="Repositories\UserMemoryRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\UserXmlRepository.cs" />

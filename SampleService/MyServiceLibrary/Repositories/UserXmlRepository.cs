@@ -1,5 +1,9 @@
 ﻿using MyServiceLibrary.Entities;
+using MyServiceLibrary.Exceptions;
+using MyServiceLibrary.Infrastructure.IdGenerators;
 using MyServiceLibrary.Interfaces;
+using MyServiceLibrary.Interfaces.Infrastructure;
+using MyServiceLibrary.Repositories.RepositoryStates;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,35 +15,38 @@ namespace MyServiceLibrary.Repositories
     public class UserXmlRepository : IRepository<User>
     {
         private readonly string filePath;
-        private readonly List<User> users = new List<User>();
+        private List<User> users = new List<User>();
+        private readonly IGenerator<int> idGenerator;
 
         public UserXmlRepository()
         {
-            filePath = Directory.GetCurrentDirectory() + @"\StateSnapshot.xml";
+            filePath = Directory.GetCurrentDirectory() + @"\RepositoryStateSnapshot.xml";
+            idGenerator = new IdGenerator();
         }
 
-        public UserXmlRepository(string path)
+        public UserXmlRepository(string filePath, IGenerator<int> idGenerator)
         {
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new ArgumentNullException("Path is null or empty string");
-            }
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException($"{nameof(filePath)} argument is null or empty string");
 
-            filePath = path;
+            if (idGenerator == null)
+                throw new ArgumentNullException($"{nameof(idGenerator)} argument is null");
+
+            this.filePath = filePath;
+            this.idGenerator = idGenerator;
         }
 
-        public bool Add(User user)
+        public User Add(User user)
         {
             if (user == null)
-                throw new ArgumentNullException("User argument is null");
+                throw new ArgumentNullException($"{nameof(user)} argument is null");
 
-            if (!users.Exists(u => u.Id == user.Id))
-            {
-                users.Add(user);
-                return true;
-            }
+            if (users.Exists(u => u.Equals(user)))
+                throw new UserAlreadyExistsException($"User {user.FirstName} {user.LastName} already exists");
 
-            return false;
+            user.Id = idGenerator.GetNext();
+            users.Add(user);
+            return user;
         }
 
         public IList<User> GetByPredicate(Predicate<User> predicate)
@@ -61,6 +68,7 @@ namespace MyServiceLibrary.Repositories
                 throw new ArgumentOutOfRangeException(nameof(userId));
 
             var findResult = users.Find(user => user.Id == userId);
+
             if (findResult != null)
             {
                 return users.Remove(findResult);
@@ -71,7 +79,9 @@ namespace MyServiceLibrary.Repositories
 
         public bool Save()
         {
-            var formatter = new XmlSerializer(typeof(List<User>));
+            var snapshot = new UserRepositorySnapshot(users, idGenerator.Current);
+
+            var formatter = new XmlSerializer(typeof(UserRepositorySnapshot));
 
             using (FileStream fs = new FileStream(filePath, FileMode.Create))
             {
@@ -83,19 +93,17 @@ namespace MyServiceLibrary.Repositories
 
         public bool Load()
         {
-            var list = LoadUsers();
+            var snapshot = LoadSnapshot();
 
-            foreach (var user in list)
-            {
-                Add(user);
-            }
+            idGenerator.Initialize(snapshot.LastId);
+            users = snapshot.Users;
 
             return true;
         }
 
-        private List<User> LoadUsers()
+        private UserRepositorySnapshot LoadSnapshot()
         {
-            XmlSerializer formatter = new XmlSerializer(typeof(List<User>));
+            XmlSerializer formatter = new XmlSerializer(typeof(UserRepositorySnapshot));
 
             using (FileStream fs = new FileStream(filePath, FileMode.Open))
             {
@@ -103,10 +111,10 @@ namespace MyServiceLibrary.Repositories
 
                 if (formatter.CanDeserialize(reader))
                 {
-                    return formatter.Deserialize(reader) as List<User>;
+                    return formatter.Deserialize(reader) as UserRepositorySnapshot;
                 }
 
-                return new List<User>();
+                return new UserRepositorySnapshot();
             }
         }
     }

@@ -45,7 +45,7 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
             var repository = new UserXmlRepository();
 
             User u = null;
-            if (repository.Add(user))
+            if (repository.Add(user) != null)
             {
                 u = repository.GetByPredicate(us => us.Equals(user)).FirstOrDefault();
             }
@@ -56,7 +56,7 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
         [TestMethod]
         public void Add_UserWhileAlreadyExists_False()
         {
-            Assert.IsFalse(repository.Add(user));
+            Assert.IsFalse(repository.Add(user) != null);
         }
 
         [TestMethod]

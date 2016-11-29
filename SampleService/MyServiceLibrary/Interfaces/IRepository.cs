@@ -6,7 +6,7 @@ namespace MyServiceLibrary.Interfaces
 {
     public interface IRepository<T> where T : IEntity
     {
-        bool Add(T entity);
+        T Add(T entity);
 
         bool Delete(int id);
 

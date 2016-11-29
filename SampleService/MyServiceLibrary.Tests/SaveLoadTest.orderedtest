@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<OrderedTest name="orderedtest1" storage="d:\valerylarkovich\projects\projects\sampleservice\myservicelibrary.tests\orderedtest1.orderedtest" id="70d6b4a8-7025-4997-b520-c4cf4ee7ae2d" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestLinks>
+    <TestLink id="aa58e9c6-aede-0d61-32f4-ad22bab3a89d" name="Save_SaveAll_Success" storage="bin\debug\myservicelibrary.tests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="5e329fe6-b030-e791-0c4e-08f8c3c2dada" name="Load_LoadAll_Success" storage="bin\debug\myservicelibrary.tests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  </TestLinks>
+</OrderedTest>

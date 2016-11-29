@@ -1,5 +1,8 @@
 ﻿using MyServiceLibrary.Entities;
+using MyServiceLibrary.Exceptions;
+using MyServiceLibrary.Infrastructure.IdGenerators;
 using MyServiceLibrary.Interfaces;
+using MyServiceLibrary.Interfaces.Infrastructure;
 using System;
 using System.Collections.Generic;
 
@@ -7,21 +10,37 @@ namespace MyServiceLibrary.Repositories
 {
     public class UserMemoryRepository: IRepository<User>
     {
-        private readonly List<User> users;
+        private readonly List<User> users = new List<User>();
+        private readonly IGenerator<int> idGenerator;
 
         public UserMemoryRepository()
         {
-            users = new List<User>();
+            idGenerator = new IdGenerator();
         }
 
-        public bool Add(User user)
+        public UserMemoryRepository(IGenerator<int> idGenerator)
         {
-            if (user != null && !users.Exists(u => u.Id == user.Id))
+            if (idGenerator == null)
             {
-                users.Add(user);
+                throw new ArgumentNullException($"{nameof(idGenerator)} argument is null");
+            }
+            
+            this.idGenerator = idGenerator;
+        }
+
+        public User Add(User user)
+        {
+            if (user == null)
+                throw new ArgumentNullException($"{nameof(user)} argument is null");
+
+            if (users.Exists(u => u.Equals(user)))
+            {
+                throw new UserAlreadyExistsException($"User {user.FirstName} {user.LastName} already exists");
             }
 
-            return false;
+            user.Id = idGenerator.GetNext();
+            users.Add(user);
+            return user;
         }
 
         public IList<User> GetByPredicate(Predicate<User> predicate)
