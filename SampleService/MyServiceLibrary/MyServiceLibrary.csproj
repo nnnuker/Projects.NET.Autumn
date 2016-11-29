@@ -53,9 +53,10 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Repositories\RepositoryStates\UserRepositorySnapshot.cs" />
-    <Compile Include="Repositories\UserMemoryRepository.cs" />
+    <Compile Include="Interfaces\IStateSaver.cs" />
+    <Compile Include="Repositories\StateSavers\XmlUserRepositorySaver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\UserXmlRepository.cs" />
+    <Compile Include="Repositories\UserMemoryRepository.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Entities\User.cs" />
   </ItemGroup>

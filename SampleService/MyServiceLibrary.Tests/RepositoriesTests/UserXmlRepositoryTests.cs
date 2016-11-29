@@ -5,6 +5,9 @@ using MyServiceLibrary.Entities;
 using MyServiceLibrary.Interfaces;
 using System.Linq;
 using MyServiceLibrary.Exceptions;
+using System.IO;
+using MyServiceLibrary.Infrastructure.IdGenerators;
+using MyServiceLibrary.Repositories.StateSavers;
 
 namespace MyServiceLibrary.Tests.RepositoriesTests
 {
@@ -17,7 +20,8 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
         [TestInitialize]
         public void Initialize()
         {
-            repository = new UserXmlRepository();
+            var path = Directory.GetCurrentDirectory() + @"\RepositoryStateSnapshot.xml";
+            repository = new UserMemoryRepository(path, new IdGenerator(), new XmlUserRepositorySaver());
 
             user = new User()
             {
@@ -43,7 +47,7 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
         [TestMethod]
         public void Add_User_Success()
         {
-            var repository = new UserXmlRepository();
+            var repository = new UserMemoryRepository();
 
             User u = null;
             if (repository.Add(user) != null)

@@ -7,7 +7,7 @@ namespace ServiceApplication
     {
         public static void Main(string[] args)
         {
-            var service = new UserMemoryRepository();
+            //var service = new UserMemoryRepository();
 
             // 1. Add a new user to the storage.
             // 2. Remove an user from the storage.

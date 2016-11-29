@@ -18,7 +18,7 @@ namespace MyServiceLibrary.Services
 
         public UserService()
         {
-            repository = new UserXmlRepository();
+            repository = new UserMemoryRepository();
             validator = new UserValidator();
         }
 
