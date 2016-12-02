@@ -6,14 +6,13 @@ using System.Collections.Generic;
 
 namespace MyServiceLibrary.Replication
 {
-    public class MasterService<T> : IService<T>, IReplicable<T> where T:IEntity
+    public class MasterService<T> : IReplicable<T> where T:IEntity
     {
         private IService<T> decoratedService;
 
         public ServiceModeEnum ServiceMode { get; } = ServiceModeEnum.Master;
 
-        public event EventHandler<Message<T>> EntityAdded = delegate { };
-        public event EventHandler<Message<int>> EntityDeleted = delegate { };
+        public event EventHandler<Message<T>> MessageReceived = delegate { };
 
         public MasterService(IService<T> service)
         {
@@ -43,11 +42,7 @@ namespace MyServiceLibrary.Replication
             return decoratedService.GetByPredicate(predicate);
         }
 
-        public void OnEntityAdded(T entity)
-        {
-        }
-
-        public void OnEntityDeleted(int id)
+        public void OnMessageReceived(Message<T> message)
         {
         }
 
