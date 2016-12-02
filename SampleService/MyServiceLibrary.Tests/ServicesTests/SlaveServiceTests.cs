@@ -12,7 +12,7 @@ namespace MyServiceLibrary.Tests.ServicesTests
     {
         private SlaveService<User> slaveService;
 
-        [ClassInitialize]
+        [TestInitialize]
         public void Initialize()
         {
             slaveService = new SlaveService<User>(new BasicUserService());
