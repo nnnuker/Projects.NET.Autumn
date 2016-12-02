@@ -52,12 +52,22 @@
     <Compile Include="Interfaces\Infrastructure\IValidator.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\Replication\IDataReceiver.cs" />
+    <Compile Include="Interfaces\Replication\IDataSender.cs" />
+    <Compile Include="Interfaces\Replication\Message.cs" />
+    <Compile Include="Interfaces\Replication\IReplicable.cs" />
+    <Compile Include="Interfaces\Replication\MessageTypeEnum.cs" />
+    <Compile Include="Interfaces\Replication\ServiceModeEnum.cs" />
+    <Compile Include="Replication\MasterService.cs" />
+    <Compile Include="Replication\MessageSenders\MessageReceiver.cs" />
+    <Compile Include="Replication\MessageSenders\MessageSender.cs" />
+    <Compile Include="Replication\SlaveService.cs" />
     <Compile Include="Repositories\RepositoryStates\UserRepositorySnapshot.cs" />
     <Compile Include="Interfaces\IStateSaver.cs" />
     <Compile Include="Repositories\StateSavers\XmlUserRepositorySaver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\UserMemoryRepository.cs" />
-    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\BasicUserService.cs" />
     <Compile Include="Entities\User.cs" />
   </ItemGroup>
   <ItemGroup />

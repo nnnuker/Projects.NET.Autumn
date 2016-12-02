@@ -9,13 +9,13 @@ namespace MyServiceLibrary.Tests.ServicesTests
     [TestClass]
     public class UserServiceTests
     {
-        private UserService userService;
+        private BasicUserService userService;
         private User user;
 
         [TestInitialize]
         public void Initialize()
         {
-            userService = new UserService();
+            userService = new BasicUserService();
             user = new User()
             {
                 FirstName = "Petr",
@@ -68,8 +68,8 @@ namespace MyServiceLibrary.Tests.ServicesTests
         [TestMethod]
         public void Delete_User_Success()
         {
-            userService.Add(user);
-            userService.Delete(user);
+            user = userService.Add(user);
+            userService.Delete(user.Id);
 
             Assert.IsTrue(userService.GetAll().Count == 0);
         }

@@ -8,10 +8,14 @@ namespace MyServiceLibrary.Interfaces
     {
         T Add(T user);
 
-        bool Delete(T user);
+        bool Delete(int id);
 
         IList<T> GetAll();
 
         IList<T> GetByPredicate(Predicate<T> predicate);
+
+        void Save();
+
+        void Load();
     }
 }
