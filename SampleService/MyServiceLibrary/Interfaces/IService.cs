@@ -8,7 +8,7 @@ namespace MyServiceLibrary.Interfaces
     {
         T Add(T user);
 
-        bool Delete(int id);
+        bool Delete(T user);
 
         IList<T> GetAll();
 

@@ -55,9 +55,9 @@ namespace MyServiceLibrary.Services
             return user;
         }
 
-        public bool Delete(int id)
+        public bool Delete(User user)
         {
-            return repository.Delete(id);
+            return repository.Delete(user.Id);
         }
 
         public IList<User> GetAll()

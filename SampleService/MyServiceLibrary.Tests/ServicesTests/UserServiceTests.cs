@@ -69,7 +69,7 @@ namespace MyServiceLibrary.Tests.ServicesTests
         public void Delete_User_Success()
         {
             user = userService.Add(user);
-            userService.Delete(user.Id);
+            userService.Delete(user);
 
             Assert.IsTrue(userService.GetAll().Count == 0);
         }

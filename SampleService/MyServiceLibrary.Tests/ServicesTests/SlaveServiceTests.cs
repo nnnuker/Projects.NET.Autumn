@@ -29,7 +29,7 @@ namespace MyServiceLibrary.Tests.ServicesTests
         [ExpectedException(typeof(InvalidOperationException))]
         public void Delete_UserId_ExceptionThrown()
         {
-            slaveService.Delete(10);
+            slaveService.Delete(new User());
         }
     }
 }

@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 namespace MyServiceLibrary.Replication
 {
-    public class MasterService<T> : IReplicable<T> where T:IEntity
+    public class MasterService<T> : IReplicable<T, Message<T>> where T : IEntity
     {
         private IService<T> decoratedService;
 
         public ServiceModeEnum ServiceMode { get; } = ServiceModeEnum.Master;
 
-        public event EventHandler<Message<T>> MessageReceived = delegate { };
+        public event EventHandler<Message<T>> MessageCreated = delegate { };
 
         public MasterService(IService<T> service)
         {
@@ -24,12 +24,21 @@ namespace MyServiceLibrary.Replication
 
         public T Add(T user)
         {
-            return decoratedService.Add(user);
+            var result = decoratedService.Add(user);
+
+            MessageCreated(this, new Message<T>(MessageTypeEnum.Add, result));
+
+            return result;
         }
 
-        public bool Delete(int id)
+        public bool Delete(T user)
         {
-            return decoratedService.Delete(id);
+            if (decoratedService.Delete(user))
+            {
+                MessageCreated(this, new Message<T>(MessageTypeEnum.Delete, user));
+            }
+
+            return false;
         }
 
         public IList<T> GetAll()

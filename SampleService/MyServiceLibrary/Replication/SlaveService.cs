@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 namespace MyServiceLibrary.Replication
 {
-    public class SlaveService<T> : IReplicable<T> where T:IEntity
+    public class SlaveService<T> : IReplicable<T, Message<T>> where T:IEntity
     {
         private IService<T> decoratedService;
 
         public ServiceModeEnum ServiceMode { get; } = ServiceModeEnum.Slave;
 
-        public event EventHandler<Message<T>> MessageReceived = delegate { };
+        public event EventHandler<Message<T>> MessageCreated = delegate { };
 
         public SlaveService(IService<T> service)
         {
@@ -27,7 +27,7 @@ namespace MyServiceLibrary.Replication
             throw new InvalidOperationException();
         }
 
-        public bool Delete(int id)
+        public bool Delete(T user)
         {
             throw new InvalidOperationException();
         }
