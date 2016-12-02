@@ -1,37 +1,35 @@
 ﻿using MyServiceLibrary.Entities;
 using MyServiceLibrary.Exceptions;
-using MyServiceLibrary.Infrastructure.IdGenerators;
 using MyServiceLibrary.Infrastructure.UserValidators;
 using MyServiceLibrary.Interfaces;
 using MyServiceLibrary.Interfaces.Infrastructure;
 using MyServiceLibrary.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MyServiceLibrary.Services
 {
-    public class UserService : IService<User>
+    public class BasicUserService : IService<User>
     {
         private readonly IRepository<User> repository;
         private readonly IValidator<User> validator;
 
-        public UserService()
+        public BasicUserService()
         {
             repository = new UserMemoryRepository();
             validator = new UserValidator();
         }
 
-        public UserService(IRepository<User> repository, IValidator<User> validator)
+        public BasicUserService(IRepository<User> repository, IValidator<User> validator)
         {
             if (repository == null)
             {
-                throw new ArgumentNullException("Repository is null");
+                throw new ArgumentNullException($"{nameof(repository)} argument is null");
             }
 
             if (validator == null)
             {
-                throw new ArgumentNullException("Validator is null");
+                throw new ArgumentNullException($"{nameof(validator)} argument is null");
             }
 
             this.repository = repository;
@@ -44,27 +42,22 @@ namespace MyServiceLibrary.Services
         {
             if (user == null)
             {
-                throw new ArgumentNullException("User argument is null when add user");
+                throw new ArgumentNullException($"{nameof(user)} argument is null when add user");
             }
 
             if (!validator.IsValid(user))
             {
-                throw new UserValidationException("User is invalid");
+                throw new UserValidationException($"User is invalid");
             }
-            
-            repository.Add(user);
+
+            user = repository.Add(user);
 
             return user;
         }
 
-        public bool Delete(User user)
+        public bool Delete(int id)
         {
-            if (user == null)
-            {
-                throw new ArgumentNullException("User argument is null when delete user");
-            }
-
-            return repository.Delete(user.Id);
+            return repository.Delete(id);
         }
 
         public IList<User> GetAll()
@@ -76,10 +69,20 @@ namespace MyServiceLibrary.Services
         {
             if (predicate == null)
             {
-                throw new ArgumentNullException("Predicate argument null");
+                throw new ArgumentNullException($"{nameof(predicate)} argument null");
             }
 
             return repository.GetByPredicate(predicate);
+        }
+
+        public void Load()
+        {
+            repository.Load();
+        }
+
+        public void Save()
+        {
+            repository.Save();
         }
     }
 }
