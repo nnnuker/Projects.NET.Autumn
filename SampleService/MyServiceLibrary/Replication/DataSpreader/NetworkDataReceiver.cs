@@ -2,21 +2,24 @@
 using MyServiceLibrary.Interfaces.Replication;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MyServiceLibrary.Replication.MessageSenders
+namespace MyServiceLibrary.Replication.DataSpreader
 {
-    public class DataSpreader : IDataSpreader<Message<User>>
+    public class NetworkDataReceiver : IDataSpreader<Message<User>>
     {
         private List<string> ips;
 
         public event EventHandler<Message<User>> DataReceived = delegate { };
-        
-        public DataSpreader()
+
+        public NetworkDataReceiver()
         {
             ips = new List<string>();
         }
 
-        public DataSpreader(params string[] ips)
+        public NetworkDataReceiver(params string[] ips)
         {
             if (ips == null)
                 throw new ArgumentNullException($"{nameof(ips)} argument is null.");
@@ -24,17 +27,14 @@ namespace MyServiceLibrary.Replication.MessageSenders
 
         public void Send(Message<User> data)
         {
-            throw new NotImplementedException();
         }
 
         public void Start()
         {
-            throw new NotImplementedException();
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
         }
     }
 }

@@ -2,6 +2,7 @@
 using MyServiceLibrary.Interfaces.Replication;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyServiceLibrary.Replication
 {
@@ -20,14 +21,19 @@ namespace MyServiceLibrary.Replication
                 throw new ArgumentNullException($"{nameof(service)} argument is null");
 
             if (dataSpreaders == null)
-                
+                throw new ArgumentNullException($"{nameof(dataSpreaders)} argument is null");
 
             decoratedService = service;
             ServiceMode = decoratedService.ServiceMode;
 
             decoratedService.MessageCreated += OnMessageCreated;
 
-            
+            this.dataSpreaders = dataSpreaders.ToList();
+            foreach (var spreader in this.dataSpreaders)
+            {
+                spreader.DataReceived += OnMessageReceived;
+                spreader.Start();
+            }
         }
 
         public User Add(User user)

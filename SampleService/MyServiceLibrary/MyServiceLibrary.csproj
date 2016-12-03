@@ -58,8 +58,9 @@
     <Compile Include="Interfaces\Replication\MessageTypeEnum.cs" />
     <Compile Include="Interfaces\Replication\ServiceModeEnum.cs" />
     <Compile Include="Replication\DataSpreaderService.cs" />
+    <Compile Include="Replication\DataSpreader\NetworkDataReceiver.cs" />
     <Compile Include="Replication\MasterService.cs" />
-    <Compile Include="Replication\DataSpreader\DataSpreader.cs" />
+    <Compile Include="Replication\DataSpreader\NetworkDataSender.cs" />
     <Compile Include="Replication\SlaveService.cs" />
     <Compile Include="Repositories\RepositoryStates\UserRepositorySnapshot.cs" />
     <Compile Include="Interfaces\IStateSaver.cs" />
