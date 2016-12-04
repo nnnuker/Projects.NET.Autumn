@@ -44,16 +44,38 @@ namespace MyServiceLibrary.Replication
 
         public void OnMessageReceived(Message<T> message)
         {
+            if (message == null)
+                throw new ArgumentNullException($"{nameof(message)} argument is null");
+
+            switch (message.MessageType)
+            {
+                case MessageTypeEnum.Add:
+                    {
+                        decoratedService.Add(message.Data);
+                        break;
+                    }
+
+                case MessageTypeEnum.Delete:
+                    {
+                        decoratedService.Delete(message.Data);
+                        break;
+                    }
+
+                default:
+                    {
+                        throw new NotSupportedException($"{message.MessageType} message is not supported");
+                    }
+            }
         }
 
-        public void Save()
+        public bool Save()
         {
-            decoratedService.Save();
+            return decoratedService.Save();
         }
 
-        public void Load()
+        public bool Load()
         {
-            decoratedService.Load();
+            return decoratedService.Load();
         }
     }
 }

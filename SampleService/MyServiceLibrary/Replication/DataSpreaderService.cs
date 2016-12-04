@@ -6,33 +6,36 @@ using System.Linq;
 
 namespace MyServiceLibrary.Replication
 {
-    public class DataSpreaderService : IReplicable<User, Message<User>>
+    public class DataSpreaderService : IReplicable<User, Message<User>>, IDataSpreadersChangeable<Message<User>>
     {
-        private IReplicable<User, Message<User>> decoratedService;
+        private readonly IReplicable<User, Message<User>> decoratedService;
         private List<IDataSpreader<Message<User>>> dataSpreaders;
 
         public ServiceModeEnum ServiceMode { get; }
 
         public event EventHandler<Message<User>> MessageCreated = delegate { };
 
-        public DataSpreaderService(IReplicable<User, Message<User>> service, params IDataSpreader<Message<User>>[] dataSpreaders)
+        public DataSpreaderService(IReplicable<User, Message<User>> service)
         {
             if (service == null)
                 throw new ArgumentNullException($"{nameof(service)} argument is null");
-
-            if (dataSpreaders == null)
-                throw new ArgumentNullException($"{nameof(dataSpreaders)} argument is null");
 
             decoratedService = service;
             ServiceMode = decoratedService.ServiceMode;
 
             decoratedService.MessageCreated += OnMessageCreated;
 
-            this.dataSpreaders = dataSpreaders.ToList();
-            foreach (var spreader in this.dataSpreaders)
+            dataSpreaders = new List<IDataSpreader<Message<User>>>();
+        }
+
+        public DataSpreaderService(IReplicable<User, Message<User>> service, IEnumerable<IDataSpreader<Message<User>>> dataSpreaders) : this(service)
+        {
+            if (dataSpreaders == null)
+                throw new ArgumentNullException($"{nameof(dataSpreaders)} argument is null");
+
+            foreach (var dataSpreader in dataSpreaders)
             {
-                spreader.DataReceived += OnMessageReceived;
-                spreader.Start();
+                AddDataSpreader(dataSpreader);
             }
         }
 
@@ -58,38 +61,51 @@ namespace MyServiceLibrary.Replication
 
         public void OnMessageReceived(Message<User> message)
         {
-            if (message == null)
-                throw new ArgumentNullException($"{nameof(message)} argument is null");
+            decoratedService.OnMessageReceived(message);
+        }
 
-            switch (message.MessageType)
+        public bool Save()
+        {
+            return decoratedService.Save();
+        }
+
+        public bool Load()
+        {
+            return decoratedService.Load();
+        }
+
+        public void AddDataSpreader(IDataSpreader<Message<User>> dataSpreader)
+        {
+            if (dataSpreader == null)
+                throw new ArgumentNullException($"{nameof(dataSpreader)} argument is null");
+
+            dataSpreaders.Add(dataSpreader);
+
+            dataSpreader.Start();
+
+            foreach (var data in decoratedService.GetAll())
             {
-                case MessageTypeEnum.Add:
-                    {
-                        decoratedService.Add(message.Data);
-                        break;
-                    }
-                    
-                case MessageTypeEnum.Delete:
-                    {
-                        decoratedService.Delete(message.Data);
-                        break;
-                    }
-                    
-                default:
-                    {
-                        throw new NotSupportedException($"{message.MessageType} message is not supported");
-                    }
+                dataSpreader.Send(new Message<User>(MessageTypeEnum.Add, data));
             }
+
+            dataSpreader.DataReceived += OnMessageReceived; 
         }
 
-        public void Save()
+        public void RemoveDataSpreader(string spreaderName)
         {
-            decoratedService.Save();
-        }
+            if (spreaderName == null)
+                throw new ArgumentNullException($"{nameof(spreaderName)} argument is null");
 
-        public void Load()
-        {
-            decoratedService.Load();
+            var spreader = dataSpreaders.FirstOrDefault(spr => spr.Name == spreaderName);
+
+            if (spreader == null)
+            {
+                return;
+            }
+
+            spreader.DataReceived -= OnMessageReceived;
+
+            dataSpreaders.Remove(spreader);
         }
 
         private void OnMessageCreated(object sender, Message<User> message)

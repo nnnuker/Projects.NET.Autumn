@@ -58,6 +58,7 @@
     <Compile Include="RepositoriesTests\UserXmlRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicesTests\SlaveServiceTests.cs" />
+    <Compile Include="ServicesTests\DataSpreaderServiceTests.cs" />
     <Compile Include="ServicesTests\UserServiceTests.cs" />
     <Compile Include="ValidatorsTests\UserValidatorTests.cs" />
   </ItemGroup>

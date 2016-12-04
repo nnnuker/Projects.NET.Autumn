@@ -20,8 +20,7 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
         [TestInitialize]
         public void Initialize()
         {
-            var path = Directory.GetCurrentDirectory() + @"\RepositoryStateSnapshot.xml";
-            repository = new UserMemoryRepository(path, new IdGenerator(), new XmlUserRepositorySaver());
+            repository = new UserMemoryRepository(new IdGenerator(), new XmlUserRepositorySaver());
 
             user = new User()
             {

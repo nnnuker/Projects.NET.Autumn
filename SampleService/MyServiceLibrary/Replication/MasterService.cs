@@ -55,14 +55,24 @@ namespace MyServiceLibrary.Replication
         {
         }
 
-        public void Save()
+        public bool Save()
         {
-            decoratedService.Save();
+            return decoratedService.Save();
         }
 
-        public void Load()
+        public bool Load()
         {
-            decoratedService.Load();
+            bool loaded  = decoratedService.Load();
+
+            if (loaded)
+            {
+                foreach (var data in decoratedService.GetAll())
+                {
+                    MessageCreated(this, new Message<T>(MessageTypeEnum.Add, data));
+                }
+            }
+
+            return loaded;
         }
     }
 }
