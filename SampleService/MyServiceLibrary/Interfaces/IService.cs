@@ -14,8 +14,8 @@ namespace MyServiceLibrary.Interfaces
 
         IList<T> GetByPredicate(Predicate<T> predicate);
 
-        void Save();
+        bool Save();
 
-        void Load();
+        bool Load();
     }
 }
