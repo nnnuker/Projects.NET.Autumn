@@ -1,14 +1,31 @@
-﻿using MyServiceLibrary.Interfaces;
+﻿using System;
+using MyServiceLibrary.Interfaces;
 using MyServiceLibrary.Repositories.RepositoryStates;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using MyServiceLibrary.Interfaces.Infrastructure;
 
 namespace MyServiceLibrary.Repositories.StateSavers
 {
     public class XmlUserRepositorySaver : IStateSaver<UserRepositorySnapshot>
     {
-        public void Save(UserRepositorySnapshot state, string filePath)
+        private readonly string filePath;
+
+        public XmlUserRepositorySaver()
+        {
+            filePath = Directory.GetCurrentDirectory() + @"\RepositoryStateSnapshot.xml";
+        }
+
+        public XmlUserRepositorySaver(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException($"{nameof(filePath)} argument is null or empty string");
+
+            this.filePath = filePath;
+        }
+
+        public void Save(UserRepositorySnapshot state)
         {
             var formatter = new XmlSerializer(typeof(UserRepositorySnapshot));
 
@@ -18,7 +35,7 @@ namespace MyServiceLibrary.Repositories.StateSavers
             }
         }
 
-        public UserRepositorySnapshot Load(string filePath)
+        public UserRepositorySnapshot Load()
         {
             XmlSerializer formatter = new XmlSerializer(typeof(UserRepositorySnapshot));
 

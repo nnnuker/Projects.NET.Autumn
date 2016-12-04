@@ -33,7 +33,6 @@ namespace MyServiceLibrary.Services
             }
 
             this.repository = repository;
-            repository.Load();
 
             this.validator = validator;
         }
@@ -75,14 +74,14 @@ namespace MyServiceLibrary.Services
             return repository.GetByPredicate(predicate);
         }
 
-        public void Load()
+        public bool Load()
         {
-            repository.Load();
+            return repository.Load();
         }
 
-        public void Save()
+        public bool Save()
         {
-            repository.Save();
+            return repository.Save();
         }
     }
 }

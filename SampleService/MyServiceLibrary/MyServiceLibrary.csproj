@@ -58,12 +58,16 @@
     <Compile Include="Interfaces\Replication\MessageTypeEnum.cs" />
     <Compile Include="Interfaces\Replication\ServiceModeEnum.cs" />
     <Compile Include="Replication\DataSpreaderService.cs" />
+    <Compile Include="Interfaces\Replication\IDataSpreadersChangeable.cs" />
     <Compile Include="Replication\DataSpreader\NetworkDataReceiver.cs" />
+    <Compile Include="Replication\DataSpreader\OneAppDataReceiver.cs" />
+    <Compile Include="Replication\DataSpreader\OneAppDataSender.cs" />
+    <Compile Include="Replication\DataSpreader\States\AsyncState.cs" />
     <Compile Include="Replication\MasterService.cs" />
     <Compile Include="Replication\DataSpreader\NetworkDataSender.cs" />
     <Compile Include="Replication\SlaveService.cs" />
     <Compile Include="Repositories\RepositoryStates\UserRepositorySnapshot.cs" />
-    <Compile Include="Interfaces\IStateSaver.cs" />
+    <Compile Include="Interfaces\Infrastructure\IStateSaver.cs" />
     <Compile Include="Repositories\StateSavers\XmlUserRepositorySaver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\UserMemoryRepository.cs" />
