@@ -27,3 +27,7 @@
 /HelloService/HelloService/obj/Debug
 /CustomHandlersModulsWeb/packages
 /SampleService/TestResults
+/SampleService/NetworkServer/bin/Debug
+/SampleService/NetworkServer/obj/Debug
+/SampleService/NetworkClient/bin/Debug
+/SampleService/NetworkClient/obj/Debug

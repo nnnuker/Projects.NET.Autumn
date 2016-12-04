@@ -3,11 +3,12 @@ using System.ComponentModel;
 
 namespace MyServiceLibrary.Interfaces.Replication
 {
+    [Serializable]
     public class Message<T> : EventArgs 
     {
-        public MessageTypeEnum MessageType { get; }
+        public MessageTypeEnum MessageType { get; set; }
 
-        public T Data { get; }
+        public T Data { get; set; }
 
         public Message()
         {

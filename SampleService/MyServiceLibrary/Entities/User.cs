@@ -3,6 +3,7 @@ using System;
 
 namespace MyServiceLibrary.Entities
 {
+    [Serializable]
     public class User: IEntity, IEquatable<User>
     {
         #region Properties
