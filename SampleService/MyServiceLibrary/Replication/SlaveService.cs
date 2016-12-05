@@ -1,12 +1,14 @@
 ﻿using MyServiceLibrary.Interfaces;
 using MyServiceLibrary.Interfaces.Entities;
 using MyServiceLibrary.Interfaces.Replication;
+using MyServiceLibrary.Replication.Attributes;
 using System;
 using System.Collections.Generic;
 
 namespace MyServiceLibrary.Replication
 {
-    public class SlaveService<T> : IReplicable<T, Message<T>> where T:IEntity
+    [Slave]
+    public class SlaveService<T> : IReplicable<T, Message<T>> where T : IEntity
     {
         private IService<T> decoratedService;
 
