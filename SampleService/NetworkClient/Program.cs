@@ -8,6 +8,7 @@ using MyServiceLibrary.Entities;
 using MyServiceLibrary.Replication;
 using MyServiceLibrary.Replication.DataSpreader;
 using MyServiceLibrary.Services;
+using System.Threading;
 
 namespace NetworkClient
 {
@@ -17,7 +18,7 @@ namespace NetworkClient
         {
             var client = new DataSpreaderService(new MasterService<User>(new BasicUserService()));
 
-            var sender = new NetworkDataSender("1", new IPEndPoint(IPAddress.Loopback, 8081));
+            var sender = new NetworkDataSender("1", new IPEndPoint(IPAddress.Loopback, 8081), new IPEndPoint(IPAddress.Loopback, 8082));
 
             client.AddDataSpreader(sender);
 

@@ -52,6 +52,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ConfigurationsTests\AppConfigurationTests.cs" />
     <Compile Include="EntitiesTests\UserTests.cs" />
     <Compile Include="IdGeneratorsTests\IdGeneratorTests.cs" />
     <Compile Include="IdGeneratorsTests\NumbersIteratorTests.cs" />
@@ -69,10 +70,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="SaveLoadTest.orderedtest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

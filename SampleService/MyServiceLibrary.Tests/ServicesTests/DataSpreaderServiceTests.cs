@@ -88,26 +88,5 @@ namespace MyServiceLibrary.Tests.ServicesTests
 
             Assert.IsTrue(result.Count == 0);
         }
-
-        [TestMethod]
-        public void MasterAdd_Network_SlavesReceived()
-        {
-            var endPoint = new IPEndPoint(IPAddress.Loopback, 8081);
-
-            var networkReceiver = new NetworkDataReceiver("3", endPoint);
-            var networkSender = new NetworkDataSender("4", endPoint);
-
-            slave.AddDataSpreader(networkReceiver);
-            slave1.AddDataSpreader(networkReceiver);
-            master.AddDataSpreader(networkSender);
-
-            master.Add(user);
-
-            var result = slave.GetAll();
-            var result1 = slave1.GetAll();
-
-            Assert.IsTrue(result[0].Equals(user));
-            Assert.IsTrue(result1[0].Equals(user));
-        }
     }
 }
