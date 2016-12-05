@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,6 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\AppConfiguration.cs" />
+    <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\DataSpreaders\DataSpreaderCollection.cs" />
+    <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\DataSpreaders\DataSpreaderElement.cs" />
+    <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\DataSpreaders\DataSpreaderIpElement.cs" />
+    <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\DataSpreaders\DataSpreaderIpsCollection.cs" />
+    <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\GeneratorElement.cs" />
+    <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\RepositoryElement.cs" />
+    <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\ValidatorElement.cs" />
+    <Compile Include="Configurations\CustomServiceSections\ServicesCollection.cs" />
+    <Compile Include="Configurations\CustomServiceSections\ServiceElement.cs" />
+    <Compile Include="Configurations\CustomServiceSections\ServicesSection.cs" />
     <Compile Include="Entities\GenderEnum.cs" />
     <Compile Include="Entities\VisaRecord.cs" />
     <Compile Include="Exceptions\UserAlreadyExistsException.cs" />
@@ -52,11 +64,14 @@
     <Compile Include="Interfaces\Infrastructure\IValidator.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\IServiceFactory.cs" />
     <Compile Include="Interfaces\Replication\IDataSpreader.cs" />
     <Compile Include="Interfaces\Replication\Message.cs" />
     <Compile Include="Interfaces\Replication\IReplicable.cs" />
     <Compile Include="Interfaces\Replication\MessageTypeEnum.cs" />
     <Compile Include="Interfaces\Replication\ServiceModeEnum.cs" />
+    <Compile Include="Replication\Attributes\MasterAttribute.cs" />
+    <Compile Include="Replication\Attributes\SlaveAttribute.cs" />
     <Compile Include="Replication\DataSpreaderService.cs" />
     <Compile Include="Interfaces\Replication\IDataSpreadersChangeable.cs" />
     <Compile Include="Replication\DataSpreader\NetworkDataReceiver.cs" />
@@ -73,6 +88,7 @@
     <Compile Include="Repositories\UserMemoryRepository.cs" />
     <Compile Include="Services\BasicUserService.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Services\Factories\BasicServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
