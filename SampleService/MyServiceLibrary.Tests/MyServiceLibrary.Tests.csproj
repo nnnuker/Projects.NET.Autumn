@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -54,6 +55,7 @@
   <ItemGroup>
     <Compile Include="ConfigurationsTests\AppConfigurationTests.cs" />
     <Compile Include="EntitiesTests\UserTests.cs" />
+    <Compile Include="FactoriesTests\BasicServiceFactoryTests.cs" />
     <Compile Include="IdGeneratorsTests\IdGeneratorTests.cs" />
     <Compile Include="IdGeneratorsTests\NumbersIteratorTests.cs" />
     <Compile Include="RepositoriesTests\UserXmlRepositoryTests.cs" />

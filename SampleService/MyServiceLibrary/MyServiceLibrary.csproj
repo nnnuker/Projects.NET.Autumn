@@ -64,7 +64,6 @@
     <Compile Include="Interfaces\Infrastructure\IValidator.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />
-    <Compile Include="Interfaces\IServiceFactory.cs" />
     <Compile Include="Interfaces\Replication\IDataSpreader.cs" />
     <Compile Include="Interfaces\Replication\Message.cs" />
     <Compile Include="Interfaces\Replication\IReplicable.cs" />
@@ -89,6 +88,7 @@
     <Compile Include="Services\BasicUserService.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Services\Factories\BasicServiceFactory.cs" />
+    <Compile Include="Services\Factories\DomainServiceLoader.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

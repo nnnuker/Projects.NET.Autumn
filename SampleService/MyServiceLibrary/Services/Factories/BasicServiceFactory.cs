@@ -1,18 +1,54 @@
-﻿using MyServiceLibrary.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MyServiceLibrary.Entities;
+using System.Reflection;
+using MyServiceLibrary.Configurations;
+using MyServiceLibrary.Configurations.CustomServiceSections;
+using MyServiceLibrary.Replication;
 
 namespace MyServiceLibrary.Services.Factories
 {
-    public class BasicServiceFactory : IServiceFactory
+    public class BasicServiceFactory
     {
-        public IService<User> GetService()
+        public List<DataSpreaderService> RunServices()
         {
-            throw new NotImplementedException();
+            List<ServiceElement> servicesConfigurations = AppConfiguration.GetServices();
+
+            return servicesConfigurations.Select(CreateService).ToList();
+        }
+
+        private DataSpreaderService CreateService(ServiceElement serviceElement)
+        {
+            var domain = this.CreateDomain(serviceElement.DomainName);
+
+            var serviceLoader = (DomainServiceLoader)domain.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(DomainServiceLoader).FullName);
+
+            return serviceLoader.GetService();
+        }
+
+        private AppDomain CreateDomain(string domainName)
+        {
+            var baseSetup = AppDomain.CurrentDomain.SetupInformation;
+
+            var domainSetup = new AppDomainSetup
+            {
+                ApplicationBase = baseSetup.ApplicationBase,
+                PrivateBinPath = baseSetup.ApplicationBase,
+                ConfigurationFile = baseSetup.ConfigurationFile
+            };
+
+            var privateBinPath = domainSetup.PrivateBinPath;
+
+            domainSetup.PrivateBinPath = Path.Combine(privateBinPath, domainName);
+
+            var domain = AppDomain.CreateDomain(domainName, null, domainSetup);
+
+            domainSetup.PrivateBinPath = privateBinPath;
+
+            domain.Load(Assembly.GetExecutingAssembly().FullName);
+
+            return domain;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace MyServiceLibrary.Replication
 {
-    public class DataSpreaderService : IReplicable<User, Message<User>>, IDataSpreadersChangeable<Message<User>>
+    public class DataSpreaderService : MarshalByRefObject, IReplicable<User, Message<User>>, IDataSpreadersChangeable<Message<User>>
     {
         private readonly IReplicable<User, Message<User>> decoratedService;
         private List<IDataSpreader<Message<User>>> dataSpreaders;
