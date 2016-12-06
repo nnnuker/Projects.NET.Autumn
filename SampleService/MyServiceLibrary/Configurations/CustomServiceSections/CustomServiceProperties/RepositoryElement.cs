@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServiceProperties
 {
@@ -18,7 +19,7 @@ namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServicePro
             set { base["saver"] = value; }
         }
 
-        [ConfigurationProperty("path", IsRequired = false, DefaultValue = "")]
+        [ConfigurationProperty("path", IsRequired = false)]
         public string Path
         {
             get { return (string)base["path"]; }

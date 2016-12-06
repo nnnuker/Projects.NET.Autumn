@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServiceProperties.DataSpreaders
 {
@@ -11,7 +12,7 @@ namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServicePro
             set { base["ip"] = value; }
         }
 
-        [ConfigurationProperty("port", IsKey = true, IsRequired = true)]
+        [ConfigurationProperty("port", IsRequired = true)]
         public string Port
         {
             get { return (string)base["port"]; }

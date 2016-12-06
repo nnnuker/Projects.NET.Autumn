@@ -1,4 +1,5 @@
-﻿using MyServiceLibrary.Configurations.CustomServiceSections.CustomServiceProperties;
+﻿using System;
+using MyServiceLibrary.Configurations.CustomServiceSections.CustomServiceProperties;
 using MyServiceLibrary.Configurations.CustomServiceSections.CustomServiceProperties.DataSpreaders;
 using System.Configuration;
 
@@ -6,44 +7,51 @@ namespace MyServiceLibrary.Configurations.CustomServiceSections
 {
     public class ServiceElement : ConfigurationElement
     {
-        [ConfigurationProperty("type", IsKey = true, IsRequired = true)]
+        [ConfigurationProperty("type", IsRequired = true)]
         public string ServiceType
         {
             get { return (string)base["type"]; }
             set { base["type"] = value; }
         }
 
-        [ConfigurationProperty("domainName", IsKey = false, IsRequired = true)]
+        [ConfigurationProperty("domainName", IsRequired = true)]
         public string DomainName
         {
             get { return (string)base["domainName"]; }
             set { base["domainName"] = value; }
         }
 
-        [ConfigurationProperty("Repository", IsKey = false, IsRequired = false)]
+        [ConfigurationProperty("Repository", IsRequired = false)]
         public RepositoryElement Repository
         {
             get { return (RepositoryElement)base["Repository"]; }
             set { base["Repository"] = value; }
         }
 
-        [ConfigurationProperty("Validator", IsKey = false, IsRequired = false)]
+        [ConfigurationProperty("Validator", IsRequired = false)]
         public ValidatorElement Validator
         {
             get { return (ValidatorElement)base["Validator"]; }
             set { base["Validator"] = value; }
         }
 
-        [ConfigurationProperty("Generator", IsKey = false, IsRequired = false)]
+        [ConfigurationProperty("Generator", IsRequired = false)]
         public GeneratorElement Generator
         {
             get { return (GeneratorElement)base["Generator"]; }
             set { base["Generator"] = value; }
         }
 
-        [ConfigurationProperty("DataSpreaders", IsRequired = true)]
+        [ConfigurationProperty("isMaster", IsRequired = true)]
+        public bool IsMaster
+        {
+            get { return (bool)base["isMaster"]; }
+            set { base["isMaster"] = value; }
+        }
+
+        [ConfigurationProperty("DataSpreaders", IsRequired = false)]
         [ConfigurationCollection(typeof(DataSpreaderElement), AddItemName = "DataSpreader")]
-        public DataSpreadersCollection Ips
+        public DataSpreadersCollection DataSpreaders
         {
             get { return (DataSpreadersCollection)base["DataSpreaders"]; }
             set { base["DataSpreaders"] = value; }

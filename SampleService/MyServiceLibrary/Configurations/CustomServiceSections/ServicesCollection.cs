@@ -11,7 +11,7 @@ namespace MyServiceLibrary.Configurations.CustomServiceSections
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((ServiceElement)element).ServiceType;
+            return ((ServiceElement)element).DomainName;
         }
     }
 }

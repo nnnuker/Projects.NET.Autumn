@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServiceProperties.DataSpreaders
 {
@@ -13,7 +14,7 @@ namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServicePro
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((DataSpreaderElement)element).DataSpreaderType;
+            return ((DataSpreaderElement)element).Name;
         }
     }
 }

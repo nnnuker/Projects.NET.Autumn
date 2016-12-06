@@ -9,8 +9,7 @@ namespace MyServiceLibrary.Configurations
     {
         public static List<ServiceElement> GetServices()
         {
-            var conf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var section = conf.Sections["Replication"] as ServicesSection;//ConfigurationManager.GetSection("Replication") as ServicesSection;
+            var section = ConfigurationManager.GetSection("Replication") as ServicesSection;
 
             if (section == null)
                 throw new ConfigurationErrorsException("Replication section not found");
