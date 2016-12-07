@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyServiceLibrary.Exceptions;
 using MyServiceLibrary.Services;
 using MyServiceLibrary.Entities;
+using MyServiceLibrary.Infrastructure.SearchCriteria;
 
 namespace MyServiceLibrary.Tests.ServicesTests
 {
@@ -85,7 +86,7 @@ namespace MyServiceLibrary.Tests.ServicesTests
         public void GetByPredicate_RightPredicate_UserReturns()
         {
             userService.Add(user);
-            Assert.IsTrue(userService.GetByPredicate(u => u.Equals(user)).Count == 1);
+            Assert.IsTrue(userService.GetByPredicate(new GenderCriteria { Gender = user.Gender}).Count == 1);
         }
     }
 }

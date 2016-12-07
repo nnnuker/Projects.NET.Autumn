@@ -35,13 +35,13 @@ namespace MyServiceLibrary.Tests.ServicesTests
         public void Initialize()
         {
             master = new DataSpreaderService(
-                new MasterService<User>(
+                new MasterService(
                     new BasicUserService(
                         new UserMemoryRepository(new IdGenerator(), new XmlUserRepositorySaver()), 
                         new UserValidator())));
 
-            slave = new DataSpreaderService(new SlaveService<User>(new BasicUserService()));
-            slave1 = new DataSpreaderService(new SlaveService<User>(new BasicUserService()));
+            slave = new DataSpreaderService(new SlaveService(new BasicUserService()));
+            slave1 = new DataSpreaderService(new SlaveService(new BasicUserService()));
 
             var sender = new OneAppDataSender("1", slave, slave1);
             var receiver = new OneAppDataReceiver("2", master);

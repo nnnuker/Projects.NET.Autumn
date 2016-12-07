@@ -64,14 +64,14 @@ namespace MyServiceLibrary.Services
             return repository.GetAll();
         }
 
-        public IList<User> GetByPredicate(Predicate<User> predicate)
+        public IList<User> GetByPredicate(ISearchCriteria<User> predicate)
         {
             if (predicate == null)
             {
                 throw new ArgumentNullException($"{nameof(predicate)} argument null");
             }
 
-            return repository.GetByPredicate(predicate);
+            return repository.GetByPredicate(predicate.IsMatch);
         }
 
         public bool Load()

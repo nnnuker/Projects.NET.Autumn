@@ -61,9 +61,13 @@
     <Compile Include="Exceptions\UserValidationException.cs" />
     <Compile Include="Infrastructure\IdGenerators\IdGenerator.cs" />
     <Compile Include="Infrastructure\IdGenerators\NumbersIterator.cs" />
+    <Compile Include="Infrastructure\SearchCriteria\GenderCriteria.cs" />
+    <Compile Include="Infrastructure\SearchCriteria\NameCriteria.cs" />
+    <Compile Include="Infrastructure\SearchCriteria\PersonalIdCriteria.cs" />
     <Compile Include="Infrastructure\UserValidators\UserValidator.cs" />
     <Compile Include="Interfaces\Infrastructure\IGenerator.cs" />
     <Compile Include="Interfaces\Entities\IEntity.cs" />
+    <Compile Include="Interfaces\Infrastructure\ISearchCriteria.cs" />
     <Compile Include="Interfaces\Infrastructure\IValidator.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />

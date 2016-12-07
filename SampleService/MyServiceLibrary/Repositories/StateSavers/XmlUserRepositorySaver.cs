@@ -20,7 +20,7 @@ namespace MyServiceLibrary.Repositories.StateSavers
         public XmlUserRepositorySaver(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentNullException($"{nameof(filePath)} argument is null or empty string");
+                filePath = Directory.GetCurrentDirectory() + @"\RepositoryStateSnapshot.xml";
 
             this.filePath = filePath;
         }

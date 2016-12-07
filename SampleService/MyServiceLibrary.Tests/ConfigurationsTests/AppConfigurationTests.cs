@@ -12,7 +12,7 @@ namespace MyServiceLibrary.Tests.ConfigurationsTests
             var services = AppConfiguration.GetServices();
 
             Assert.IsNotNull(services);
-            Assert.IsTrue(services.Count == 3);
+            Assert.IsTrue(services.Count == 1);
         }
     }
 }

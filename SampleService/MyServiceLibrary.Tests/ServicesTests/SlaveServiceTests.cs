@@ -10,12 +10,12 @@ namespace MyServiceLibrary.Tests.ServicesTests
     [TestClass]
     public class SlaveServiceTests
     {
-        private SlaveService<User> slaveService;
+        private SlaveService slaveService;
 
         [TestInitialize]
         public void Initialize()
         {
-            slaveService = new SlaveService<User>(new BasicUserService());
+            slaveService = new SlaveService(new BasicUserService());
         }
 
         [TestMethod]

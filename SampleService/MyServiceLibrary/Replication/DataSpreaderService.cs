@@ -1,4 +1,5 @@
 ﻿using MyServiceLibrary.Entities;
+using MyServiceLibrary.Interfaces.Infrastructure;
 using MyServiceLibrary.Interfaces.Replication;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,7 @@ namespace MyServiceLibrary.Replication
             return decoratedService.GetAll();
         }
 
-        public IList<User> GetByPredicate(Predicate<User> predicate)
+        public IList<User> GetByPredicate(ISearchCriteria<User> predicate)
         {
             return decoratedService.GetByPredicate(predicate);
         }
