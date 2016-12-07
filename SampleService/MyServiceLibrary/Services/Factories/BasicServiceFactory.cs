@@ -25,7 +25,7 @@ namespace MyServiceLibrary.Services.Factories
 
             var serviceLoader = (DomainServiceLoader)domain.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(DomainServiceLoader).FullName);
 
-            return serviceLoader.GetService();
+            return serviceLoader.GetService(serviceElement);
         }
 
         private AppDomain CreateDomain(string domainName)
