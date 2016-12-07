@@ -1,4 +1,5 @@
 ﻿using MyServiceLibrary.Interfaces.Entities;
+using MyServiceLibrary.Interfaces.Infrastructure;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +13,7 @@ namespace MyServiceLibrary.Interfaces
 
         IList<T> GetAll();
 
-        IList<T> GetByPredicate(Predicate<T> predicate);
+        IList<T> GetByPredicate(ISearchCriteria<T> predicate);
 
         bool Save();
 
