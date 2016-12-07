@@ -10,6 +10,7 @@ using MyServiceLibrary.Replication.Attributes;
 using MyServiceLibrary.Repositories.RepositoryStates;
 using System.Net;
 using System.Collections.Generic;
+using MyServiceLibrary.Infrastructure.Loggers;
 
 namespace MyServiceLibrary.Services.Factories
 {
@@ -22,13 +23,17 @@ namespace MyServiceLibrary.Services.Factories
                 throw new ArgumentNullException(nameof(serviceElement));
             }
 
-            object idGenerator = Activator.CreateInstance(Type.GetType(serviceElement.GeneratorType, true, true)) as IGenerator<int>;
-            object saver = Activator.CreateInstance(Type.GetType(serviceElement.RepositoryStateSaverType, true, true)) as IStateSaver<UserRepositorySnapshot>;
+            var idGenerator = Activator.CreateInstance(Type.GetType(serviceElement.GeneratorType, true, true)) as IGenerator<int>;
+            var saver = Activator.CreateInstance(Type.GetType(serviceElement.RepositoryStateSaverType, true, true)) as IStateSaver<UserRepositorySnapshot>;
 
-            object repository = Activator.CreateInstance(Type.GetType(serviceElement.RepositoryType, true, true), idGenerator, saver) as IRepository<User>;
-            object validator = Activator.CreateInstance(Type.GetType(serviceElement.ValidatorType, true, true)) as IValidator<User>;
+            var repository = Activator.CreateInstance(Type.GetType(serviceElement.RepositoryType, true, true), idGenerator, saver) as IRepository<User>;
+            var validator = Activator.CreateInstance(Type.GetType(serviceElement.ValidatorType, true, true)) as IValidator<User>;
 
-            object basicService = Activator.CreateInstance(typeof(BasicUserService), repository, validator) as IService<User>;
+            var basicService = Activator.CreateInstance(typeof(BasicUserService), repository, validator) as IService<User>;
+
+            var logger = Activator.CreateInstance(typeof(NlogLogger));
+
+            var loggableService = Activator.CreateInstance(typeof(LoggableUserService), basicService, logger);
 
             var serviceType = Type.GetType(serviceElement.ServiceType, true, true);
             var attributes = serviceType.GetCustomAttributesData().ToList();
@@ -37,13 +42,13 @@ namespace MyServiceLibrary.Services.Factories
 
             if (attributes.Exists(attr => attr.AttributeType == typeof(MasterAttribute)))
             {
-                service = Activator.CreateInstance(serviceType, basicService) as IReplicable<User, Message<User>>;
+                service = Activator.CreateInstance(serviceType, loggableService) as IReplicable<User, Message<User>>;
             }
             else
             {
                 if (attributes.Exists(attr => attr.AttributeType == typeof(SlaveAttribute)))
                 {
-                    service = Activator.CreateInstance(serviceType, basicService) as IReplicable<User, Message<User>>;
+                    service = Activator.CreateInstance(serviceType, loggableService) as IReplicable<User, Message<User>>;
                 }
             }
 

@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -61,12 +65,14 @@
     <Compile Include="Exceptions\UserValidationException.cs" />
     <Compile Include="Infrastructure\IdGenerators\IdGenerator.cs" />
     <Compile Include="Infrastructure\IdGenerators\NumbersIterator.cs" />
+    <Compile Include="Infrastructure\Loggers\NlogLogger.cs" />
     <Compile Include="Infrastructure\SearchCriteria\GenderCriteria.cs" />
     <Compile Include="Infrastructure\SearchCriteria\NameCriteria.cs" />
     <Compile Include="Infrastructure\SearchCriteria\PersonalIdCriteria.cs" />
     <Compile Include="Infrastructure\UserValidators\UserValidator.cs" />
     <Compile Include="Interfaces\Infrastructure\IGenerator.cs" />
     <Compile Include="Interfaces\Entities\IEntity.cs" />
+    <Compile Include="Interfaces\Infrastructure\ILogger.cs" />
     <Compile Include="Interfaces\Infrastructure\ISearchCriteria.cs" />
     <Compile Include="Interfaces\Infrastructure\IValidator.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
@@ -96,8 +102,11 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Services\Factories\BasicServiceFactory.cs" />
     <Compile Include="Services\Factories\DomainServiceLoader.cs" />
+    <Compile Include="Services\LoggableUserService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
