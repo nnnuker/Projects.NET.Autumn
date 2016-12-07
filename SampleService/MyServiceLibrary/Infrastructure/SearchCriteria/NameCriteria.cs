@@ -1,8 +1,10 @@
-﻿using MyServiceLibrary.Entities;
+﻿using System;
+using MyServiceLibrary.Entities;
 using MyServiceLibrary.Interfaces.Infrastructure;
 
 namespace MyServiceLibrary.Infrastructure.SearchCriteria
 {
+    [Serializable]
     public class NameCriteria : ISearchCriteria<User>
     {
         public string FirstName { get; set; }
