@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using MyServiceLibrary.Configurations;
 using MyServiceLibrary.Configurations.CustomServiceSections;
+using MyServiceLibrary.Configurations.SerializableConfiguration;
 using MyServiceLibrary.Replication;
 
 namespace MyServiceLibrary.Services.Factories
@@ -13,12 +14,12 @@ namespace MyServiceLibrary.Services.Factories
     {
         public List<DataSpreaderService> RunServices()
         {
-            List<ServiceElement> servicesConfigurations = AppConfiguration.GetServices();
+            List<ServiceConfiguration> servicesConfigurations = AppConfiguration.GetServices();
 
             return servicesConfigurations.Select(CreateService).ToList();
         }
 
-        private DataSpreaderService CreateService(ServiceElement serviceElement)
+        private DataSpreaderService CreateService(ServiceConfiguration serviceElement)
         {
             var domain = this.CreateDomain(serviceElement.DomainName);
 

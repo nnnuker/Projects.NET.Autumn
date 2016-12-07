@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyServiceLibrary.Configurations;
 
 namespace MyServiceLibrary.Tests.ConfigurationsTests

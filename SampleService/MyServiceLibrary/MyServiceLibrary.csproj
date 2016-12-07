@@ -52,6 +52,9 @@
     <Compile Include="Configurations\CustomServiceSections\ServicesCollection.cs" />
     <Compile Include="Configurations\CustomServiceSections\ServiceElement.cs" />
     <Compile Include="Configurations\CustomServiceSections\ServicesSection.cs" />
+    <Compile Include="Configurations\SerializableConfiguration\DataSpreaderConfiguration.cs" />
+    <Compile Include="Configurations\SerializableConfiguration\EndPointConfiguration.cs" />
+    <Compile Include="Configurations\SerializableConfiguration\ServiceConfiguration.cs" />
     <Compile Include="Entities\GenderEnum.cs" />
     <Compile Include="Entities\VisaRecord.cs" />
     <Compile Include="Exceptions\UserAlreadyExistsException.cs" />
