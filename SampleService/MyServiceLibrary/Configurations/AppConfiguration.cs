@@ -19,6 +19,8 @@ namespace MyServiceLibrary.Configurations
 
             var serviceElements = section.Services.OfType<ServiceElement>();
 
+            var loggerType = ConfigurationManager.AppSettings["LoggerType"] ?? "";
+
             return (from serviceElement in serviceElements
                     let dataSpreaderElements = serviceElement.DataSpreaders.OfType<DataSpreaderElement>()
                     let dataSpreaders = (from dataSpreaderElement in dataSpreaderElements
@@ -43,7 +45,8 @@ namespace MyServiceLibrary.Configurations
                         RepositoryPath = serviceElement.Repository.Path,
                         RepositoryStateSaverType = serviceElement.Repository.StateSaver,
                         IsMaster = serviceElement.IsMaster,
-                        DataSpreaders = dataSpreaders
+                        DataSpreaders = dataSpreaders,
+                        LoggerType = loggerType
                     }).ToList();
         }
     }

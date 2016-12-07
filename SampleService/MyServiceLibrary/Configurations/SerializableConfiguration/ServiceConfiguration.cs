@@ -15,5 +15,6 @@ namespace MyServiceLibrary.Configurations.SerializableConfiguration
         public string GeneratorType { get; set; }
         public bool IsMaster { get; set; }
         public List<DataSpreaderConfiguration> DataSpreaders { get; set; }
+        public string LoggerType { get; set; }
     }
 }

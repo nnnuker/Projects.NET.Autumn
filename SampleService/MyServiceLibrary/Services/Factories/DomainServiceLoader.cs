@@ -31,9 +31,12 @@ namespace MyServiceLibrary.Services.Factories
 
             var basicService = Activator.CreateInstance(typeof(BasicUserService), repository, validator) as IService<User>;
 
-            var logger = Activator.CreateInstance(typeof(NlogLogger));
+            if (!string.IsNullOrEmpty(serviceElement.LoggerType))
+            {
+                var logger = Activator.CreateInstance(Type.GetType(serviceElement.LoggerType, true, true));
 
-            var loggableService = Activator.CreateInstance(typeof(LoggableUserService), basicService, logger);
+                basicService = Activator.CreateInstance(typeof(LoggableUserService), basicService, logger) as IService<User>;
+            }
 
             var serviceType = Type.GetType(serviceElement.ServiceType, true, true);
             var attributes = serviceType.GetCustomAttributesData().ToList();
@@ -42,13 +45,13 @@ namespace MyServiceLibrary.Services.Factories
 
             if (attributes.Exists(attr => attr.AttributeType == typeof(MasterAttribute)))
             {
-                service = Activator.CreateInstance(serviceType, loggableService) as IReplicable<User, Message<User>>;
+                service = Activator.CreateInstance(serviceType, basicService) as IReplicable<User, Message<User>>;
             }
             else
             {
                 if (attributes.Exists(attr => attr.AttributeType == typeof(SlaveAttribute)))
                 {
-                    service = Activator.CreateInstance(serviceType, loggableService) as IReplicable<User, Message<User>>;
+                    service = Activator.CreateInstance(serviceType, basicService) as IReplicable<User, Message<User>>;
                 }
             }
 
