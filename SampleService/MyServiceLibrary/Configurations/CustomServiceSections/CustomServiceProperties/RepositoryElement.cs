@@ -5,7 +5,7 @@ namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServicePro
 {
     public class RepositoryElement : ConfigurationElement
     {
-        [ConfigurationProperty("type", IsRequired = true)]
+        [ConfigurationProperty("type", IsRequired = true, DefaultValue = "MyServiceLibrary.Repositories.UserMemoryRepository, MyServiceLibrary")]
         public string RepositoryType
         {
             get { return (string)base["type"]; }

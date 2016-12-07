@@ -5,7 +5,7 @@ namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServicePro
 {
     public class GeneratorElement : ConfigurationElement
     {
-        [ConfigurationProperty("type", IsRequired = true)]
+        [ConfigurationProperty("type", IsRequired = true, DefaultValue = "MyServiceLibrary.Infrastructure.IdGenerators.IdGenerator, MyServiceLibrary")]
         public string GeneratorType
         {
             get { return (string)base["type"]; }

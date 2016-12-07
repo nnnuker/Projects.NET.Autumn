@@ -5,7 +5,7 @@ namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServicePro
 {
     public class ValidatorElement : ConfigurationElement
     {
-        [ConfigurationProperty("type", IsRequired = true)]
+        [ConfigurationProperty("type", IsRequired = true, DefaultValue = "MyServiceLibrary.Infrastructure.UserValidators.UserValidator, MyServiceLibrary")]
         public string ValidatorType
         {
             get { return (string)base["type"]; }
