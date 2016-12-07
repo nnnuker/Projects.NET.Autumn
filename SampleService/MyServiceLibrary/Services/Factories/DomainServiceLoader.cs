@@ -8,6 +8,8 @@ using MyServiceLibrary.Interfaces.Replication;
 using MyServiceLibrary.Replication;
 using MyServiceLibrary.Replication.Attributes;
 using MyServiceLibrary.Repositories.RepositoryStates;
+using System.Net;
+using System.Collections.Generic;
 
 namespace MyServiceLibrary.Services.Factories
 {
@@ -45,7 +47,34 @@ namespace MyServiceLibrary.Services.Factories
                 }
             }
 
-            return (DataSpreaderService)Activator.CreateInstance(typeof(DataSpreaderService), service);
+            var spreaderService = (DataSpreaderService)Activator.CreateInstance(typeof(DataSpreaderService), service);
+
+            AddDataSpreaders(serviceElement, spreaderService);
+
+            return spreaderService;
+        }
+
+        public void AddDataSpreaders(ServiceConfiguration serviceElement, DataSpreaderService service)
+        {
+            var spreaders = new List<IDataSpreader<Message<User>>>();
+
+            foreach (var spreaderElement in serviceElement.DataSpreaders)
+            {
+                var endPoints = spreaderElement.EndPoints
+                    .Select(end => new IPEndPoint(IPAddress.Parse(end.Ip), int.Parse(end.Port))).ToArray();
+
+                var spreader = Activator.CreateInstance(Type.GetType(spreaderElement.DataSpreaderType, true, true), spreaderElement.Name, endPoints) as IDataSpreader<Message<User>>;
+
+                if (spreader != null)
+                {
+                    spreaders.Add(spreader);
+                }
+            }
+
+            foreach (var item in spreaders)
+            {
+                service.AddDataSpreader(item);
+            }
         }
     }
 }

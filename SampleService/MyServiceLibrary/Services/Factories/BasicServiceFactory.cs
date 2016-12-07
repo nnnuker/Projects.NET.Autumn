@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using MyServiceLibrary.Configurations;
-using MyServiceLibrary.Configurations.CustomServiceSections;
 using MyServiceLibrary.Configurations.SerializableConfiguration;
 using MyServiceLibrary.Replication;
 
