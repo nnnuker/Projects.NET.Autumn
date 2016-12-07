@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using MyServiceLibrary.Entities;
-using MyServiceLibrary.Replication;
-using MyServiceLibrary.Replication.DataSpreader;
-using MyServiceLibrary.Services;
-using System.Threading;
+using MyServiceLibrary.Services.Factories;
 
 namespace NetworkClient
 {
@@ -16,12 +9,10 @@ namespace NetworkClient
     {
         static void Main(string[] args)
         {
-            var client = new DataSpreaderService(new MasterService<User>(new BasicUserService()));
+            var factory = new BasicServiceFactory();
 
-            var sender = new NetworkDataSender("1", new IPEndPoint(IPAddress.Loopback, 8081), new IPEndPoint(IPAddress.Loopback, 8082));
-
-            client.AddDataSpreader(sender);
-
+            var client = factory.RunServices().FirstOrDefault();
+           
             Console.WriteLine("Enter to send");
             Console.ReadLine();
 

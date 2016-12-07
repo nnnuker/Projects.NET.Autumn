@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
-using MyServiceLibrary.Entities;
 using MyServiceLibrary.Replication;
-using MyServiceLibrary.Replication.DataSpreader;
-using MyServiceLibrary.Services;
+using MyServiceLibrary.Services.Factories;
 
 namespace NetworkServer
 {
@@ -12,23 +9,25 @@ namespace NetworkServer
     {
         static void Main(string[] args)
         {
-            var slave = new DataSpreaderService(new SlaveService<User>(new BasicUserService()));
-            var slave1 = new DataSpreaderService(new SlaveService<User>(new BasicUserService()));
+            var factory = new BasicServiceFactory();
 
-            var receiver = new NetworkDataReceiver("1", new IPEndPoint(IPAddress.Loopback, 8081));
-            var receiver1 = new NetworkDataReceiver("1", new IPEndPoint(IPAddress.Loopback, 8082));
+            var services = factory.RunServices();
 
-            slave.AddDataSpreader(receiver);
-            slave1.AddDataSpreader(receiver1);
+            var slave = services[0];
+            var slave1 = services[1];
+
+            Console.WriteLine($"Ready to receive: slave - {slave != null} ; slave1 - {slave1 != null}. Count of all - {services.Count}");
 
             while (true)
             {
                 try
                 {
-                    if (GetSlaveData(slave))
+                    if (GetSlaveData(slave, "slave"))
                     {
-                        GetSlaveData(slave1);
-                        break;
+                        if (GetSlaveData(slave1, "slave1"))
+                        {
+                            break;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -36,14 +35,17 @@ namespace NetworkServer
                     Console.WriteLine(ex.Message);
                 }
             }
+
+            Console.WriteLine("Enter to exit");
+            Console.ReadLine();
         }
 
-        private static bool GetSlaveData(DataSpreaderService slave)
+        private static bool GetSlaveData(DataSpreaderService slave, string args)
         {
             var obj = slave.GetAll().FirstOrDefault();
             if (obj != null)
             {
-                Console.WriteLine("Received: " + obj.FirstName);
+                Console.WriteLine($"Received from {args}: {obj.FirstName} {obj.LastName}");
                 return true;
             }
 
