@@ -18,9 +18,7 @@ namespace MyServiceLibrary.Configurations
                 throw new ConfigurationErrorsException("Replication section not found");
 
             var serviceElements = section.Services.OfType<ServiceElement>();
-
-            var loggerType = ConfigurationManager.AppSettings["LoggerType"] ?? "";
-
+            
             return (from serviceElement in serviceElements
                     let dataSpreaderElements = serviceElement.DataSpreaders.OfType<DataSpreaderElement>()
                     let dataSpreaders = (from dataSpreaderElement in dataSpreaderElements
@@ -46,7 +44,8 @@ namespace MyServiceLibrary.Configurations
                         RepositoryStateSaverType = serviceElement.Repository.StateSaver,
                         IsMaster = serviceElement.IsMaster,
                         DataSpreaders = dataSpreaders,
-                        LoggerType = loggerType
+                        LoggerType = serviceElement.Logger.LoggerType,
+                        LoggerName = serviceElement.Logger.Name
                     }).ToList();
         }
     }

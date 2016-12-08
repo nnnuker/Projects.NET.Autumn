@@ -51,6 +51,7 @@
     <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\DataSpreaders\DataSpreaderIpElement.cs" />
     <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\DataSpreaders\DataSpreaderIpsCollection.cs" />
     <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\GeneratorElement.cs" />
+    <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\LoggerElement.cs" />
     <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\RepositoryElement.cs" />
     <Compile Include="Configurations\CustomServiceSections\CustomServiceProperties\ValidatorElement.cs" />
     <Compile Include="Configurations\CustomServiceSections\ServicesCollection.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Repositories\UserMemoryRepository.cs" />
     <Compile Include="Services\BasicUserService.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Services\ConcurrentUserService.cs" />
     <Compile Include="Services\Factories\BasicServiceFactory.cs" />
     <Compile Include="Services\Factories\DomainServiceLoader.cs" />
     <Compile Include="Services\LoggableUserService.cs" />

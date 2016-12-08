@@ -28,6 +28,13 @@ namespace MyServiceLibrary.Configurations.CustomServiceSections
             set { base["Repository"] = value; }
         }
 
+        [ConfigurationProperty("Logger", IsRequired = false)]
+        public LoggerElement Logger
+        {
+            get { return (LoggerElement)base["Logger"]; }
+            set { base["Logger"] = value; }
+        }
+
         [ConfigurationProperty("Validator", IsRequired = false)]
         public ValidatorElement Validator
         {
