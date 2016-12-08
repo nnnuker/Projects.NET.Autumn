@@ -65,7 +65,7 @@ namespace NetworkClient
                     master.Add(new User()
                     {
                         FirstName = firstName,
-                        LastName = "The greatest",
+                        LastName = "First",
                         PersonalId = "PiterSaint",
                         DateOfBirth = DateTime.MinValue,
                         Visas =
@@ -89,7 +89,7 @@ namespace NetworkClient
                     master.Add(new User()
                     {
                         FirstName = firstName,
-                        LastName = "The greatest",
+                        LastName = "Second",
                         PersonalId = "PiterSaint",
                         DateOfBirth = DateTime.MinValue,
                         Visas =

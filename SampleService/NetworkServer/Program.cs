@@ -1,7 +1,10 @@
 ﻿using System;
-using System.Linq;
 using MyServiceLibrary.Replication;
 using MyServiceLibrary.Services.Factories;
+using System.Collections.Generic;
+using System.Threading;
+using MyServiceLibrary.Infrastructure.SearchCriteria;
+using MyServiceLibrary.Entities;
 
 namespace NetworkServer
 {
@@ -18,38 +21,101 @@ namespace NetworkServer
 
             Console.WriteLine($"Ready to receive: slave - {slave != null} ; slave1 - {slave1 != null}. Count of all - {services.Count}");
 
-            while (true)
+            var threads = new List<Thread>();
+
+            var mres = new ManualResetEventSlim();
+
+            threads.AddRange(Threads(mres, slave, "slave 1"));
+            threads.AddRange(Threads(mres, slave1, "slave 2"));
+
+            foreach (var thread in threads)
             {
-                try
-                {
-                    if (GetSlaveData(slave, "slave"))
-                    {
-                        if (GetSlaveData(slave1, "slave1"))
-                        {
-                            break;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                thread.Start();
+            }
+
+            Console.WriteLine("Enter to start workers");
+            Console.ReadLine();
+
+            mres.Set();
+
+            foreach (var thread in threads)
+            {
+                thread.Join();
             }
 
             Console.WriteLine("Enter to exit");
             Console.ReadLine();
         }
 
-        private static bool GetSlaveData(DataSpreaderService slave, string args)
+        private static IList<Thread> CreateWorkers(ManualResetEventSlim mres, Action action, int threadsNum, int cycles)
         {
-            var obj = slave.GetAll().FirstOrDefault();
-            if (obj != null)
+            var threads = new Thread[threadsNum];
+
+            for (int i = 0; i < threadsNum; i++)
             {
-                Console.WriteLine($"Received from {args}: {obj.FirstName} {obj.LastName}");
-                return true;
+                Action d = () =>
+                {
+                    mres.Wait();
+
+                    for (int j = 0; j < cycles; j++)
+                    {
+                        action();
+                    }
+                };
+
+                Thread thread = new Thread(new ThreadStart(d));
+
+                threads[i] = thread;
             }
 
-            return false;
+            return threads;
+        }
+
+        private static List<Thread> Threads(ManualResetEventSlim mres, DataSpreaderService service, string name)
+        {
+            var threads = new List<Thread>();
+
+            threads.AddRange(CreateWorkers(mres, () =>
+            {
+                try
+                {
+                    var result = service.GetAll();
+
+                    Console.WriteLine($"Service {name}: has {result.Count} users");
+                }
+                catch (Exception)
+                {
+                }
+            }, 5, 20));
+
+            threads.AddRange(CreateWorkers(mres, () =>
+            {
+                try
+                {
+                    var result = service.GetByPredicate(new GenderCriteria { Gender = GenderEnum.Male });
+
+                    Console.WriteLine($"Service {name}: has {result?.Count} males");
+                }
+                catch (Exception)
+                {
+                }
+            }, 5, 20));
+
+            threads.AddRange(CreateWorkers(mres, () =>
+            {
+                try
+                {
+                    var result = service.GetByPredicate(new PersonalIdCriteria { PersonalId = "PiterSaint" });
+
+                    Console.WriteLine($"Service {name}: has {result?.Count} personal ids");
+                }
+                catch (Exception)
+                {
+                }
+            }, 5, 20));
+
+
+            return threads;
         }
     }
 }
