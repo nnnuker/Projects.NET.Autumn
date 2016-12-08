@@ -4,9 +4,11 @@ using MyServiceLibrary.Interfaces.Replication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 
 namespace MyServiceLibrary.Replication
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class DataSpreaderService : MarshalByRefObject, IReplicable<User, Message<User>>, IDataSpreadersChangeable<Message<User>>
     {
         private readonly IReplicable<User, Message<User>> decoratedService;

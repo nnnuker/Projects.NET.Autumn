@@ -32,3 +32,5 @@
 /SampleService/NetworkClient/bin/Debug
 /SampleService/NetworkClient/obj/Debug
 /SampleService/packages
+/SampleService/WcfServiceHost/bin/Debug
+/SampleService/WcfServiceHost/obj/Debug
