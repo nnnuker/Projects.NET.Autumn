@@ -10,7 +10,6 @@ using MyServiceLibrary.Replication.Attributes;
 using MyServiceLibrary.Repositories.RepositoryStates;
 using System.Net;
 using System.Collections.Generic;
-using MyServiceLibrary.Infrastructure.Loggers;
 
 namespace MyServiceLibrary.Services.Factories
 {
@@ -31,12 +30,11 @@ namespace MyServiceLibrary.Services.Factories
 
             var basicService = Activator.CreateInstance(typeof(BasicUserService), repository, validator) as IService<User>;
 
-            if (!string.IsNullOrEmpty(serviceElement.LoggerType))
-            {
-                var logger = Activator.CreateInstance(Type.GetType(serviceElement.LoggerType, true, true));
+            var logger = Activator.CreateInstance(Type.GetType(serviceElement.LoggerType, true, true), serviceElement.LoggerName);
 
-                basicService = Activator.CreateInstance(typeof(LoggableUserService), basicService, logger) as IService<User>;
-            }
+            basicService = Activator.CreateInstance(typeof(LoggableUserService), basicService, logger) as IService<User>;
+
+            basicService = Activator.CreateInstance(typeof(ConcurrentUserService), basicService) as IService<User>;
 
             var serviceType = Type.GetType(serviceElement.ServiceType, true, true);
             var attributes = serviceType.GetCustomAttributesData().ToList();

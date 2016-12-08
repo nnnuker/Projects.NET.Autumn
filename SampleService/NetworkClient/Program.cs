@@ -2,6 +2,10 @@
 using System.Linq;
 using MyServiceLibrary.Entities;
 using MyServiceLibrary.Services.Factories;
+using System.Collections.Generic;
+using System.Threading;
+using MyServiceLibrary.Interfaces;
+using MyServiceLibrary.Infrastructure.SearchCriteria;
 
 namespace NetworkClient
 {
@@ -11,32 +15,126 @@ namespace NetworkClient
         {
             var factory = new BasicServiceFactory();
 
-            var client = factory.RunServices().FirstOrDefault();
-           
+            var master = factory.RunServices().FirstOrDefault();
+
             Console.WriteLine("Enter to send");
             Console.ReadLine();
 
-            try
-            {
-                client.Add(new User()
-                {
-                    FirstName = "Petr",
-                    LastName = "The greatest",
-                    PersonalId = "PiterSaint",
-                    DateOfBirth = DateTime.MinValue,
-                    Visas =
-                        new VisaRecord[]
-                            {new VisaRecord() {Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue}},
-                    Gender = GenderEnum.Male
-                });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            Threads(master);
 
             Console.WriteLine("enter to exit");
             Console.ReadLine();
+        }
+
+        private static IList<Thread> CreateWorkers(ManualResetEventSlim mres, Action action, int threadsNum, int cycles)
+        {
+            var threads = new Thread[threadsNum];
+
+            for (int i = 0; i < threadsNum; i++)
+            {
+                Action d = () =>
+                {
+                    mres.Wait();
+
+                    for (int j = 0; j < cycles; j++)
+                    {
+                        action();
+                    }
+                };
+
+                Thread thread = new Thread(new ThreadStart(d));
+
+                threads[i] = thread;
+            }
+
+            return threads;
+        }
+
+        private static void Threads(IService<User> master)
+        {
+            var mres = new ManualResetEventSlim();
+
+            var threads = new List<Thread>();
+
+            threads.AddRange(CreateWorkers(mres, () =>
+            {
+                var firstName = "first" + DateTime.Now.Ticks;
+
+                try
+                {
+                    master.Add(new User()
+                    {
+                        FirstName = firstName,
+                        LastName = "The greatest",
+                        PersonalId = "PiterSaint",
+                        DateOfBirth = DateTime.MinValue,
+                        Visas =
+                        new VisaRecord[]
+                            {new VisaRecord() {Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue}},
+                        Gender = GenderEnum.Male
+                    });
+
+                    Console.WriteLine(firstName);
+                }
+                catch (Exception)
+                {
+                }
+            }, 10, 100));
+
+            threads.AddRange(CreateWorkers(mres, () =>
+            {
+                var firstName = "second" + DateTime.Now.Ticks;
+                try
+                {
+                    master.Add(new User()
+                    {
+                        FirstName = firstName,
+                        LastName = "The greatest",
+                        PersonalId = "PiterSaint",
+                        DateOfBirth = DateTime.MinValue,
+                        Visas =
+                        new VisaRecord[]
+                            {new VisaRecord() {Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue}},
+                        Gender = GenderEnum.Female
+                    });
+
+                    Console.WriteLine(firstName);
+                }
+                catch (Exception)
+                {
+                }
+            }, 10, 100));
+
+            threads.AddRange(CreateWorkers(mres, () =>
+            {
+                var firstOrDefault = master.GetByPredicate(new GenderCriteria { Gender = GenderEnum.Male }).FirstOrDefault();
+                if (firstOrDefault != null)
+                {
+                    try
+                    {
+                        var res = master.Delete(firstOrDefault);
+                        Console.WriteLine(firstOrDefault.FirstName + " deleted: " + res);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }, 10, 100));
+
+            foreach (var thread in threads)
+            {
+                thread.Start();
+            }
+
+            Console.WriteLine("Press any key to run unblock working threads.");
+            Console.ReadKey();
+
+            mres.Set();
+
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
         }
     }
 }

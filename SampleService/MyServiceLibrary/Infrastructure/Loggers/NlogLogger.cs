@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using NLog;
 using ILogger = MyServiceLibrary.Interfaces.Infrastructure.ILogger;
+using System;
 
 namespace MyServiceLibrary.Infrastructure.Loggers
 {
@@ -9,10 +10,15 @@ namespace MyServiceLibrary.Infrastructure.Loggers
         private readonly bool enabled;
         private readonly Logger logger;
 
-        public NlogLogger()
+        public NlogLogger(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException($"{nameof(name)} argument is null or empty string");
+            }
+
             enabled = new BooleanSwitch("logEnabled", "Logger switch").Enabled;
-            logger = LogManager.GetCurrentClassLogger();
+            logger = LogManager.GetLogger(name);
         }
 
         public void Trace(string message)
