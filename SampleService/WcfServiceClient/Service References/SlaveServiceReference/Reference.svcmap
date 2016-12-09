@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="3e90459e-6ff2-45a5-9843-ef4f1f083f8b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8085/Services/ServiceSlave1" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ServiceSlave1.xsd" MetadataType="Schema" ID="b28ec810-c444-49a1-9e5a-a9a621eeae24" SourceId="1" SourceUrl="http://localhost:8085/Services/ServiceSlave1?xsd=xsd0" />
+    <MetadataFile FileName="ServiceSlave12.xsd" MetadataType="Schema" ID="3e2e956b-cdc8-4b18-ad24-49cc71b115f3" SourceId="1" SourceUrl="http://localhost:8085/Services/ServiceSlave1?xsd=xsd1" />
+    <MetadataFile FileName="ServiceSlave11.xsd" MetadataType="Schema" ID="29ff32ac-2762-4dc1-99de-2a413addac2d" SourceId="1" SourceUrl="http://localhost:8085/Services/ServiceSlave1?xsd=xsd2" />
+    <MetadataFile FileName="ServiceSlave13.xsd" MetadataType="Schema" ID="953225c7-e5d8-4a5c-9e8c-22113c4f2d7b" SourceId="1" SourceUrl="http://localhost:8085/Services/ServiceSlave1?xsd=xsd3" />
+    <MetadataFile FileName="ServiceSlave1.disco" MetadataType="Disco" ID="db3caeaa-5f9a-4d91-88cd-20e502fcd876" SourceId="1" SourceUrl="http://localhost:8085/Services/ServiceSlave1?disco" />
+    <MetadataFile FileName="DataSpreaderService.wsdl" MetadataType="Wsdl" ID="9a3c2245-5100-48f6-b48a-cf76931c13ce" SourceId="1" SourceUrl="http://localhost:8085/Services/ServiceSlave1?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

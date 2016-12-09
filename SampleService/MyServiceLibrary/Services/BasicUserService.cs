@@ -1,11 +1,11 @@
-﻿using MyServiceLibrary.Entities;
+﻿using System;
+using System.Collections.Generic;
+using MyServiceLibrary.Entities;
 using MyServiceLibrary.Exceptions;
 using MyServiceLibrary.Infrastructure.UserValidators;
 using MyServiceLibrary.Interfaces;
 using MyServiceLibrary.Interfaces.Infrastructure;
 using MyServiceLibrary.Repositories;
-using System;
-using System.Collections.Generic;
 
 namespace MyServiceLibrary.Services
 {
@@ -16,8 +16,8 @@ namespace MyServiceLibrary.Services
 
         public BasicUserService()
         {
-            repository = new UserMemoryRepository();
-            validator = new UserValidator();
+            this.repository = new UserMemoryRepository();
+            this.validator = new UserValidator();
         }
 
         public BasicUserService(IRepository<User> repository, IValidator<User> validator)
@@ -44,24 +44,24 @@ namespace MyServiceLibrary.Services
                 throw new ArgumentNullException($"{nameof(user)} argument is null when add user");
             }
 
-            if (!validator.IsValid(user))
+            if (!this.validator.IsValid(user))
             {
                 throw new UserValidationException($"User is invalid");
             }
 
-            user = repository.Add(user);
+            user = this.repository.Add(user);
 
             return user;
         }
 
         public bool Delete(User user)
         {
-            return repository.Delete(user.Id);
+            return this.repository.Delete(user.Id);
         }
 
         public IList<User> GetAll()
         {
-            return repository.GetAll();
+            return this.repository.GetAll();
         }
 
         public IList<User> GetByPredicate(ISearchCriteria<User> predicate)
@@ -71,17 +71,17 @@ namespace MyServiceLibrary.Services
                 throw new ArgumentNullException($"{nameof(predicate)} argument null");
             }
 
-            return repository.GetByPredicate(predicate.IsMatch);
+            return this.repository.GetByPredicate(predicate.IsMatch);
         }
 
         public bool Load()
         {
-            return repository.Load();
+            return this.repository.Load();
         }
 
         public bool Save()
         {
-            return repository.Save();
+            return this.repository.Save();
         }
     }
 }

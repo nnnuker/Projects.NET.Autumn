@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq;
-using MyServiceLibrary.Entities;
-using MyServiceLibrary.Services.Factories;
 using System.Collections.Generic;
 using System.Threading;
+using MyServiceLibrary.Entities;
+using MyServiceLibrary.Services.Factories;
 using MyServiceLibrary.Interfaces;
 using MyServiceLibrary.Infrastructure.SearchCriteria;
 
 namespace NetworkClient
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var factory = new BasicServiceFactory();
 
@@ -20,7 +20,14 @@ namespace NetworkClient
             Console.WriteLine("Enter to send");
             Console.ReadLine();
 
-            Threads(master);
+            try
+            {
+                Threads(master);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
 
             Console.WriteLine("enter to exit");
             Console.ReadLine();
@@ -70,7 +77,9 @@ namespace NetworkClient
                         DateOfBirth = DateTime.MinValue,
                         Visas =
                         new VisaRecord[]
-                            {new VisaRecord() {Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue}},
+                        {
+                            new VisaRecord() { Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue }
+                        },
                         Gender = GenderEnum.Male
                     });
 
@@ -94,7 +103,9 @@ namespace NetworkClient
                         DateOfBirth = DateTime.MinValue,
                         Visas =
                         new VisaRecord[]
-                            {new VisaRecord() {Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue}},
+                        {
+                            new VisaRecord() { Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue }
+                        },
                         Gender = GenderEnum.Female
                     });
 

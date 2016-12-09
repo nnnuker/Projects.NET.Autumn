@@ -1,5 +1,5 @@
-﻿using MyServiceLibrary.Interfaces.Infrastructure;
-using System;
+﻿using System;
+using MyServiceLibrary.Interfaces.Infrastructure;
 
 namespace MyServiceLibrary.Infrastructure.IdGenerators
 {
@@ -9,22 +9,16 @@ namespace MyServiceLibrary.Infrastructure.IdGenerators
 
         public IdGenerator()
         {
-            iterator = new NumbersIterator();
+            this.iterator = new NumbersIterator();
         }
 
-        public int Current
-        {
-            get
-            {
-                return iterator.Current;
-            }
-        }
+        public int Current => this.iterator.Current;
 
         public int GetNext()
         {
-            if (iterator.MoveNext())
+            if (this.iterator.MoveNext())
             {
-                return iterator.Current;
+                return this.iterator.Current;
             }
 
             throw new InvalidOperationException();
@@ -34,7 +28,7 @@ namespace MyServiceLibrary.Infrastructure.IdGenerators
         {
             if (start > 0)
             {
-                iterator.SetCurrent(start);
+                this.iterator.SetCurrent(start);
             }
         }
     }

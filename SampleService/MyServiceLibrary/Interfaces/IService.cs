@@ -1,13 +1,16 @@
-﻿using MyServiceLibrary.Interfaces.Entities;
-using MyServiceLibrary.Interfaces.Infrastructure;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ServiceModel;
+using MyServiceLibrary.Infrastructure.SearchCriteria;
+using MyServiceLibrary.Interfaces.Entities;
+using MyServiceLibrary.Interfaces.Infrastructure;
 
 namespace MyServiceLibrary.Interfaces
 {
     [ServiceContract]
-    public interface IService<T> where T:IEntity
+    [ServiceKnownType(typeof(GenderCriteria))]
+    [ServiceKnownType(typeof(NameCriteria))]
+    [ServiceKnownType(typeof(PersonalIdCriteria))]
+    public interface IService<T> where T : IEntity
     {
         [OperationContract]
         T Add(T user);

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/MyServiceLibrary.Infrastructure.SearchCriteria" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/MyServiceLibrary.Infrastructure.SearchCriteria" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8085/Services/ServiceSlave1?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/MyServiceLibrary.Entities" />
+  <xs:complexType name="GenderCriteria">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MyServiceLibrary.Entities" minOccurs="0" name="Gender" type="q1:GenderEnum" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GenderCriteria" nillable="true" type="tns:GenderCriteria" />
+  <xs:complexType name="NameCriteria">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NameCriteria" nillable="true" type="tns:NameCriteria" />
+  <xs:complexType name="PersonalIdCriteria">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PersonalId" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PersonalIdCriteria" nillable="true" type="tns:PersonalIdCriteria" />
+</xs:schema>

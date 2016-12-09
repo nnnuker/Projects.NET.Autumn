@@ -8,8 +8,9 @@ namespace MyServiceLibrary.Infrastructure.IdGenerators
     {
         private int current;
 
-        public int Current => current;
-        object IEnumerator.Current => Current;
+        public int Current => this.current;
+
+        object IEnumerator.Current => this.Current;
 
         public NumbersIterator()
         {
@@ -26,10 +27,10 @@ namespace MyServiceLibrary.Infrastructure.IdGenerators
             {
                 checked
                 {
-                    while (current < int.MaxValue)
+                    while (this.current < int.MaxValue)
                     {
-                        current++;
-                        if (IsSimple(current))
+                        this.current++;
+                        if (this.IsSimple(this.current))
                         {
                             return true;
                         }
@@ -38,7 +39,7 @@ namespace MyServiceLibrary.Infrastructure.IdGenerators
             }
             catch (OverflowException)
             {
-                Reset();
+                this.Reset();
                 return false;
             }
 
@@ -47,7 +48,7 @@ namespace MyServiceLibrary.Infrastructure.IdGenerators
 
         public void Reset()
         {
-            current = 0;
+            this.current = 0;
         }
 
         public void Dispose()

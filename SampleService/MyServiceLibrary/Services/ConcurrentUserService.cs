@@ -1,9 +1,9 @@
-﻿using MyServiceLibrary.Entities;
-using MyServiceLibrary.Interfaces;
-using MyServiceLibrary.Interfaces.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using MyServiceLibrary.Entities;
+using MyServiceLibrary.Interfaces;
+using MyServiceLibrary.Interfaces.Infrastructure;
 
 namespace MyServiceLibrary.Services
 {
@@ -15,87 +15,89 @@ namespace MyServiceLibrary.Services
         public ConcurrentUserService(IService<User> service)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException($"{nameof(service)} argument is null");
+            }
 
             this.decoratedService = service;
-            lockSlim = new ReaderWriterLockSlim();
+            this.lockSlim = new ReaderWriterLockSlim();
         }
 
         public User Add(User user)
         {
-            lockSlim.EnterWriteLock();
+            this.lockSlim.EnterWriteLock();
             try
             {
-                return decoratedService.Add(user);
+                return this.decoratedService.Add(user);
             }
             finally
             {
-                lockSlim.ExitWriteLock();
+                this.lockSlim.ExitWriteLock();
             }
         }
 
         public bool Delete(User user)
         {
-            lockSlim.EnterWriteLock();
+            this.lockSlim.EnterWriteLock();
             try
             {
-                return decoratedService.Delete(user);
+                return this.decoratedService.Delete(user);
             }
             finally
             {
-                lockSlim.ExitWriteLock();
+                this.lockSlim.ExitWriteLock();
             }
         }
 
         public IList<User> GetAll()
         {
-            lockSlim.EnterReadLock();
+            this.lockSlim.EnterReadLock();
             try
             {
-                return decoratedService.GetAll();
+                return this.decoratedService.GetAll();
             }
             finally
             {
-                lockSlim.ExitReadLock();
+                this.lockSlim.ExitReadLock();
             }
         }
 
         public IList<User> GetByPredicate(ISearchCriteria<User> predicate)
         {
-            lockSlim.EnterReadLock();
+            this.lockSlim.EnterReadLock();
             try
             {
-                return decoratedService.GetByPredicate(predicate);
+                return this.decoratedService.GetByPredicate(predicate);
             }
             finally
             {
-                lockSlim.ExitReadLock();
+                this.lockSlim.ExitReadLock();
             }
         }
 
         public bool Save()
         {
-            lockSlim.EnterWriteLock();
+            this.lockSlim.EnterWriteLock();
             try
             {
-                return decoratedService.Save();
+                return this.decoratedService.Save();
             }
             finally
             {
-                lockSlim.ExitWriteLock();
+                this.lockSlim.ExitWriteLock();
             }
         }
 
         public bool Load()
         {
-            lockSlim.EnterWriteLock();
+            this.lockSlim.EnterWriteLock();
             try
             {
-                return decoratedService.Load();
+                return this.decoratedService.Load();
             }
             finally
             {
-                lockSlim.ExitWriteLock();
+                this.lockSlim.ExitWriteLock();
             }
         }
     }

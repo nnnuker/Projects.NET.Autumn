@@ -6,19 +6,27 @@ namespace MyServiceLibrary.Replication.DataSpreader
 {
     public class OneAppDataReceiver : IDataSpreader<Message<User>>
     {
-        public string Name { get; }
         public event EventHandler<Message<User>> DataReceived = delegate { };
+
+        public string Name { get; }
 
         public OneAppDataReceiver(string name, params IReplicable<User, Message<User>>[] services)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (services == null) throw new ArgumentNullException(nameof(services));
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
 
-            Name = name;
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            this.Name = name;
 
             foreach (var replicable in services)
             {
-                replicable.MessageCreated += OnMessageCreated;
+                replicable.MessageCreated += this.OnMessageCreated;
             }
         }
 
@@ -36,7 +44,7 @@ namespace MyServiceLibrary.Replication.DataSpreader
 
         private void OnMessageCreated(object sender, Message<User> message)
         {
-            DataReceived(sender, message);
+            this.DataReceived(sender, message);
         }
     }
 }

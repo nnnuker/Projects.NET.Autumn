@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using NLog;
 using ILogger = MyServiceLibrary.Interfaces.Infrastructure.ILogger;
-using System;
 
 namespace MyServiceLibrary.Infrastructure.Loggers
 {
@@ -17,55 +17,55 @@ namespace MyServiceLibrary.Infrastructure.Loggers
                 throw new ArgumentNullException($"{nameof(name)} argument is null or empty string");
             }
 
-            enabled = new BooleanSwitch("logEnabled", "Logger switch").Enabled;
-            logger = LogManager.GetLogger(name);
+            this.enabled = new BooleanSwitch("logEnabled", "Logger switch").Enabled;
+            this.logger = LogManager.GetLogger(name);
         }
 
         public void Trace(string message)
         {
-            if (enabled)
+            if (this.enabled)
             {
-                logger.Trace(message);
+                this.logger.Trace(message);
             }
         }
 
         public void Debug(string message)
         {
-            if (enabled)
+            if (this.enabled)
             {
-                logger.Debug(message);
+                this.logger.Debug(message);
             }
         }
 
         public void Info(string message)
         {
-            if (enabled)
+            if (this.enabled)
             {
-                logger.Info(message);
+                this.logger.Info(message);
             }
         }
 
         public void Warn(string message)
         {
-            if (enabled)
+            if (this.enabled)
             {
-                logger.Warn(message);
+                this.logger.Warn(message);
             }
         }
 
         public void Error(string message)
         {
-            if (enabled)
+            if (this.enabled)
             {
-                logger.Error(message);
+                this.logger.Error(message);
             }
         }
 
         public void Fatal(string message)
         {
-            if (enabled)
+            if (this.enabled)
             {
-                logger.Fatal(message);
+                this.logger.Fatal(message);
             }
         }
     }

@@ -1,9 +1,7 @@
-﻿using System;
-using MyServiceLibrary.Interfaces;
-using MyServiceLibrary.Repositories.RepositoryStates;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using MyServiceLibrary.Repositories.RepositoryStates;
 using MyServiceLibrary.Interfaces.Infrastructure;
 
 namespace MyServiceLibrary.Repositories.StateSavers
@@ -14,13 +12,15 @@ namespace MyServiceLibrary.Repositories.StateSavers
 
         public XmlUserRepositorySaver()
         {
-            filePath = Directory.GetCurrentDirectory() + @"\RepositoryStateSnapshot.xml";
+            this.filePath = Directory.GetCurrentDirectory() + @"\RepositoryStateSnapshot.xml";
         }
 
         public XmlUserRepositorySaver(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
+            {
                 filePath = Directory.GetCurrentDirectory() + @"\RepositoryStateSnapshot.xml";
+            }
 
             this.filePath = filePath;
         }
@@ -29,7 +29,7 @@ namespace MyServiceLibrary.Repositories.StateSavers
         {
             var formatter = new XmlSerializer(typeof(UserRepositorySnapshot));
 
-            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+            using (FileStream fs = new FileStream(this.filePath, FileMode.Create))
             {
                 formatter.Serialize(fs, state);
             }
@@ -39,7 +39,7 @@ namespace MyServiceLibrary.Repositories.StateSavers
         {
             XmlSerializer formatter = new XmlSerializer(typeof(UserRepositorySnapshot));
 
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
+            using (FileStream fs = new FileStream(this.filePath, FileMode.Open))
             {
                 XmlTextReader reader = new XmlTextReader(fs);
 

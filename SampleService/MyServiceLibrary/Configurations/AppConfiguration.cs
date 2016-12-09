@@ -1,10 +1,9 @@
-﻿using MyServiceLibrary.Configurations.CustomServiceSections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using MyServiceLibrary.Configurations.CustomServiceSections;
 using MyServiceLibrary.Configurations.CustomServiceSections.CustomServiceProperties.DataSpreaders;
 using MyServiceLibrary.Configurations.SerializableConfiguration;
-using MyServiceLibrary.Replication;
 
 namespace MyServiceLibrary.Configurations
 {
@@ -15,7 +14,9 @@ namespace MyServiceLibrary.Configurations
             var section = ConfigurationManager.GetSection("Replication") as ServicesSection;
 
             if (section == null)
+            {
                 throw new ConfigurationErrorsException("Replication section not found");
+            }
 
             var serviceElements = section.Services.OfType<ServiceElement>();
             

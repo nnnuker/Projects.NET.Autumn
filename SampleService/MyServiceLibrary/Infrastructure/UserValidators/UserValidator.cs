@@ -1,6 +1,6 @@
-﻿using MyServiceLibrary.Entities;
+﻿using System;
+using MyServiceLibrary.Entities;
 using MyServiceLibrary.Interfaces.Infrastructure;
-using System;
 
 namespace MyServiceLibrary.Infrastructure.UserValidators
 {
@@ -9,7 +9,9 @@ namespace MyServiceLibrary.Infrastructure.UserValidators
         public bool IsValid(User user)
         {
             if (user == null)
+            {
                 throw new ArgumentNullException("User is null when validate");
+            }
 
             if (string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName)
                 || string.IsNullOrEmpty(user.PersonalId) || user.Visas == null

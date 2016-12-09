@@ -55,7 +55,6 @@
   <ItemGroup>
     <Compile Include="ConfigurationsTests\AppConfigurationTests.cs" />
     <Compile Include="EntitiesTests\UserTests.cs" />
-    <Compile Include="FactoriesTests\BasicServiceFactoryTests.cs" />
     <Compile Include="IdGeneratorsTests\IdGeneratorTests.cs" />
     <Compile Include="IdGeneratorsTests\NumbersIteratorTests.cs" />
     <Compile Include="RepositoriesTests\UserXmlRepositoryTests.cs" />

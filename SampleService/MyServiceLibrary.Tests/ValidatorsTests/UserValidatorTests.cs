@@ -14,7 +14,7 @@ namespace MyServiceLibrary.Tests.ValidatorsTests
         [TestInitialize]
         public void Initialize()
         {
-            user = new User()
+            this.user = new User()
             {
                 FirstName = "Matt",
                 LastName = "Murdock",
@@ -29,23 +29,23 @@ namespace MyServiceLibrary.Tests.ValidatorsTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void IsValid_NUllUser_Exception()
         {
-            validator.IsValid(null);
+            this.validator.IsValid(null);
         }
 
         [TestMethod]
         public void IsValid_VisasNull_False()
         {
-            user.Visas = null;
+            this.user.Visas = null;
 
-            Assert.IsFalse(validator.IsValid(user));
+            Assert.IsFalse(this.validator.IsValid(this.user));
         }
 
         [TestMethod]
         public void IsValid_GenderNotDefined_False()
         {
-            user.Gender = (GenderEnum)10;
+            this.user.Gender = (GenderEnum)10;
 
-            Assert.IsFalse(validator.IsValid(user));
+            Assert.IsFalse(this.validator.IsValid(this.user));
         }
     }
 }

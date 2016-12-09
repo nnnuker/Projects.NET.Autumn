@@ -1,10 +1,10 @@
-﻿using MyServiceLibrary.Entities;
-using MyServiceLibrary.Interfaces.Infrastructure;
-using MyServiceLibrary.Interfaces.Replication;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using MyServiceLibrary.Entities;
+using MyServiceLibrary.Interfaces.Infrastructure;
+using MyServiceLibrary.Interfaces.Replication;
 
 namespace MyServiceLibrary.Replication
 {
@@ -14,111 +14,119 @@ namespace MyServiceLibrary.Replication
         private readonly IReplicable<User, Message<User>> decoratedService;
         private List<IDataSpreader<Message<User>>> dataSpreaders;
 
-        public ServiceModeEnum ServiceMode { get; }
-
         public event EventHandler<Message<User>> MessageCreated = delegate { };
+
+        public ServiceModeEnum ServiceMode { get; }
 
         public DataSpreaderService(IReplicable<User, Message<User>> service)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException($"{nameof(service)} argument is null");
+            }
 
-            decoratedService = service;
-            ServiceMode = decoratedService.ServiceMode;
+            this.decoratedService = service;
+            this.ServiceMode = this.decoratedService.ServiceMode;
 
-            decoratedService.MessageCreated += OnMessageCreated;
+            this.decoratedService.MessageCreated += this.OnMessageCreated;
 
-            dataSpreaders = new List<IDataSpreader<Message<User>>>();
+            this.dataSpreaders = new List<IDataSpreader<Message<User>>>();
         }
 
         public DataSpreaderService(IReplicable<User, Message<User>> service, IEnumerable<IDataSpreader<Message<User>>> dataSpreaders) : this(service)
         {
             if (dataSpreaders == null)
+            {
                 throw new ArgumentNullException($"{nameof(dataSpreaders)} argument is null");
+            }
 
             foreach (var dataSpreader in dataSpreaders)
             {
-                AddDataSpreader(dataSpreader);
+                this.AddDataSpreader(dataSpreader);
             }
         }
 
         public User Add(User user)
         {
-            return decoratedService.Add(user);
+            return this.decoratedService.Add(user);
         }
 
         public bool Delete(User user)
         {
-            return decoratedService.Delete(user);
+            return this.decoratedService.Delete(user);
         }
 
         public IList<User> GetAll()
         {
-            return decoratedService.GetAll();
+            return this.decoratedService.GetAll();
         }
 
         public IList<User> GetByPredicate(ISearchCriteria<User> predicate)
         {
-            return decoratedService.GetByPredicate(predicate);
+            return this.decoratedService.GetByPredicate(predicate);
         }
 
         public void OnMessageReceived(Message<User> message)
         {
-            decoratedService.OnMessageReceived(message);
+            this.decoratedService.OnMessageReceived(message);
         }
 
         public bool Save()
         {
-            return decoratedService.Save();
+            return this.decoratedService.Save();
         }
 
         public bool Load()
         {
-            return decoratedService.Load();
+            return this.decoratedService.Load();
         }
 
         public void AddDataSpreader(IDataSpreader<Message<User>> dataSpreader)
         {
             if (dataSpreader == null)
+            {
                 throw new ArgumentNullException($"{nameof(dataSpreader)} argument is null");
+            }
 
-            dataSpreaders.Add(dataSpreader);
+            this.dataSpreaders.Add(dataSpreader);
 
             dataSpreader.Start();
 
-            foreach (var data in decoratedService.GetAll())
+            foreach (var data in this.decoratedService.GetAll())
             {
                 dataSpreader.Send(new Message<User>(MessageTypeEnum.Add, data));
             }
 
-            dataSpreader.DataReceived += OnMessageReceived; 
+            dataSpreader.DataReceived += this.OnMessageReceived; 
         }
 
         public void RemoveDataSpreader(string spreaderName)
         {
             if (spreaderName == null)
+            {
                 throw new ArgumentNullException($"{nameof(spreaderName)} argument is null");
+            }
 
-            var spreader = dataSpreaders.FirstOrDefault(spr => spr.Name == spreaderName);
+            var spreader = this.dataSpreaders.FirstOrDefault(spr => spr.Name == spreaderName);
 
             if (spreader == null)
             {
                 return;
             }
 
-            spreader.DataReceived -= OnMessageReceived;
+            spreader.DataReceived -= this.OnMessageReceived;
 
-            dataSpreaders.Remove(spreader);
+            this.dataSpreaders.Remove(spreader);
         }
 
         private void OnMessageCreated(object sender, Message<User> message)
         {
-            dataSpreaders.ForEach(spreader => spreader.Send(message));
+            this.dataSpreaders.ForEach(spreader => spreader.Send(message));
         }
 
         private void OnMessageReceived(object sender, Message<User> message)
         {
-            OnMessageReceived(message);
+            this.OnMessageReceived(message);
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using System.Configuration;
 using MyServiceLibrary.Configurations.CustomServiceSections.CustomServiceProperties;
 using MyServiceLibrary.Configurations.CustomServiceSections.CustomServiceProperties.DataSpreaders;
-using System.Configuration;
 
 namespace MyServiceLibrary.Configurations.CustomServiceSections
 {

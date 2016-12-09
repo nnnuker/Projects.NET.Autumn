@@ -15,7 +15,7 @@ namespace MyServiceLibrary.Services.Factories
         {
             List<ServiceConfiguration> servicesConfigurations = AppConfiguration.GetServices();
 
-            return servicesConfigurations.Select(CreateService).ToList();
+            return servicesConfigurations.Select(this.CreateService).ToList();
         }
 
         private DataSpreaderService CreateService(ServiceConfiguration serviceElement)

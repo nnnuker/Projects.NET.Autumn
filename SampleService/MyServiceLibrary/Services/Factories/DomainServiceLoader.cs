@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
+using System.Collections.Generic;
 using MyServiceLibrary.Configurations.SerializableConfiguration;
 using MyServiceLibrary.Entities;
 using MyServiceLibrary.Interfaces;
@@ -8,8 +10,6 @@ using MyServiceLibrary.Interfaces.Replication;
 using MyServiceLibrary.Replication;
 using MyServiceLibrary.Replication.Attributes;
 using MyServiceLibrary.Repositories.RepositoryStates;
-using System.Net;
-using System.Collections.Generic;
 
 namespace MyServiceLibrary.Services.Factories
 {
@@ -55,7 +55,7 @@ namespace MyServiceLibrary.Services.Factories
 
             var spreaderService = (DataSpreaderService)Activator.CreateInstance(typeof(DataSpreaderService), service);
 
-            AddDataSpreaders(serviceElement, spreaderService);
+            this.AddDataSpreaders(serviceElement, spreaderService);
 
             return spreaderService;
         }

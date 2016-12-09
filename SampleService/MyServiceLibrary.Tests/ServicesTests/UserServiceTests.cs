@@ -16,8 +16,8 @@ namespace MyServiceLibrary.Tests.ServicesTests
         [TestInitialize]
         public void Initialize()
         {
-            userService = new BasicUserService();
-            user = new User()
+            this.userService = new BasicUserService();
+            this.user = new User()
             {
                 FirstName = "Petr",
                 LastName = "The greatest",
@@ -32,61 +32,61 @@ namespace MyServiceLibrary.Tests.ServicesTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Add_NullUser_ExceptionThrown()
         {
-            userService.Add(null);
+            this.userService.Add(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(UserAlreadyExistsException))]
         public void Add_SameUser_UserAlreadyExists()
         {
-            userService.Add(user);
-            userService.Add(user);
+            this.userService.Add(this.user);
+            this.userService.Add(this.user);
         }
 
         [TestMethod]
         [ExpectedException(typeof(UserValidationException))]
         public void Add_NullFirstName_ExceptionThrown()
         {
-            user.FirstName = null;
-            userService.Add(user);
+            this.user.FirstName = null;
+            this.userService.Add(this.user);
         }
 
         [TestMethod]
         [ExpectedException(typeof(UserValidationException))]
         public void Add_EmptyLastName_ExceptionThrown()
         {
-            user.LastName = "";
-            userService.Add(user);
+            this.user.LastName = string.Empty;
+            this.userService.Add(this.user);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Delete_NullUser_ExceptionThrown()
         {
-            userService.Add(null);
+            this.userService.Add(null);
         }
 
         [TestMethod]
         public void Delete_User_Success()
         {
-            user = userService.Add(user);
-            userService.Delete(user);
+            this.user = this.userService.Add(this.user);
+            this.userService.Delete(this.user);
 
-            Assert.IsTrue(userService.GetAll().Count == 0);
+            Assert.IsTrue(this.userService.GetAll().Count == 0);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetByPredicate_NullPredicate_ExceptionThrown()
         {
-            userService.GetByPredicate(null);
+            this.userService.GetByPredicate(null);
         }
 
         [TestMethod]
         public void GetByPredicate_RightPredicate_UserReturns()
         {
-            userService.Add(user);
-            Assert.IsTrue(userService.GetByPredicate(new GenderCriteria { Gender = user.Gender}).Count == 1);
+            this.userService.Add(this.user);
+            Assert.IsTrue(this.userService.GetByPredicate(new GenderCriteria { Gender = this.user.Gender }).Count == 1);
         }
     }
 }

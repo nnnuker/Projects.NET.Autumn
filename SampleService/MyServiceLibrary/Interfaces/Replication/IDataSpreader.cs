@@ -4,12 +4,14 @@ namespace MyServiceLibrary.Interfaces.Replication
 {
     public interface IDataSpreader<TData> where TData : EventArgs
     {
+        event EventHandler<TData> DataReceived;
+
         string Name { get; }
 
-        event EventHandler<TData> DataReceived;
         void Send(TData data);
 
         void Start();
+
         void Stop();
     }
 }

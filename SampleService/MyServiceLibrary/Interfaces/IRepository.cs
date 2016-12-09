@@ -1,6 +1,6 @@
-﻿using MyServiceLibrary.Interfaces.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using MyServiceLibrary.Interfaces.Entities;
 
 namespace MyServiceLibrary.Interfaces
 {

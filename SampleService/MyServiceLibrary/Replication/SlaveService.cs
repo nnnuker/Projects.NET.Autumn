@@ -1,10 +1,10 @@
-﻿using MyServiceLibrary.Entities;
+﻿using System;
+using System.Collections.Generic;
+using MyServiceLibrary.Entities;
 using MyServiceLibrary.Interfaces;
 using MyServiceLibrary.Interfaces.Infrastructure;
 using MyServiceLibrary.Interfaces.Replication;
 using MyServiceLibrary.Replication.Attributes;
-using System;
-using System.Collections.Generic;
 
 namespace MyServiceLibrary.Replication
 {
@@ -13,14 +13,16 @@ namespace MyServiceLibrary.Replication
     {
         private IService<User> decoratedService;
 
-        public ServiceModeEnum ServiceMode { get; } = ServiceModeEnum.Slave;
-
         public event EventHandler<Message<User>> MessageCreated = delegate { };
+
+        public ServiceModeEnum ServiceMode { get; } = ServiceModeEnum.Slave;
 
         public SlaveService(IService<User> service)
         {
             if (service == null)
+            {
                 throw new ArgumentNullException($"{nameof(service)} argument is null");
+            }
 
             this.decoratedService = service;
         }
@@ -37,30 +39,32 @@ namespace MyServiceLibrary.Replication
 
         public IList<User> GetAll()
         {
-            return decoratedService.GetAll();
+            return this.decoratedService.GetAll();
         }
 
         public IList<User> GetByPredicate(ISearchCriteria<User> predicate)
         {
-            return decoratedService.GetByPredicate(predicate);
+            return this.decoratedService.GetByPredicate(predicate);
         }
 
         public void OnMessageReceived(Message<User> message)
         {
             if (message == null)
+            {
                 throw new ArgumentNullException($"{nameof(message)} argument is null");
+            }
 
             switch (message.MessageType)
             {
                 case MessageTypeEnum.Add:
                     {
-                        decoratedService.Add(message.Data);
+                        this.decoratedService.Add(message.Data);
                         break;
                     }
 
                 case MessageTypeEnum.Delete:
                     {
-                        decoratedService.Delete(message.Data);
+                        this.decoratedService.Delete(message.Data);
                         break;
                     }
 
@@ -73,12 +77,12 @@ namespace MyServiceLibrary.Replication
 
         public bool Save()
         {
-            return decoratedService.Save();
+            return this.decoratedService.Save();
         }
 
         public bool Load()
         {
-            return decoratedService.Load();
+            return this.decoratedService.Load();
         }
     }
 }

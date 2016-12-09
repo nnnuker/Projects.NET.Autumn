@@ -1,16 +1,16 @@
 ﻿using System;
-using MyServiceLibrary.Replication;
-using MyServiceLibrary.Services.Factories;
 using System.Collections.Generic;
 using System.Threading;
+using MyServiceLibrary.Replication;
+using MyServiceLibrary.Services.Factories;
 using MyServiceLibrary.Infrastructure.SearchCriteria;
 using MyServiceLibrary.Entities;
 
 namespace NetworkServer
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var factory = new BasicServiceFactory();
 
@@ -113,7 +113,6 @@ namespace NetworkServer
                 {
                 }
             }, 5, 20));
-
 
             return threads;
         }

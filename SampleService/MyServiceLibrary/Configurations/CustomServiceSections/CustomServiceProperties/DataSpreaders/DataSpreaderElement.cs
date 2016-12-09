@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 
 namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServiceProperties.DataSpreaders
 {
@@ -23,8 +22,8 @@ namespace MyServiceLibrary.Configurations.CustomServiceSections.CustomServicePro
         [ConfigurationCollection(typeof(DataSpreaderIpElement), AddItemName = "EndPoint")]
         public DataSpreadersIpsCollection Ips
         {
-            get { return (DataSpreadersIpsCollection)base[""]; }
-            set { base[""] = value; }
+            get { return (DataSpreadersIpsCollection)base[string.Empty]; }
+            set { base[string.Empty] = value; }
         }
     }
 }

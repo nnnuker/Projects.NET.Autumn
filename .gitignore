@@ -34,3 +34,5 @@
 /SampleService/packages
 /SampleService/WcfServiceHost/bin/Debug
 /SampleService/WcfServiceHost/obj/Debug
+/SampleService/WcfServiceClient/bin/Debug
+/SampleService/WcfServiceClient/obj/Debug

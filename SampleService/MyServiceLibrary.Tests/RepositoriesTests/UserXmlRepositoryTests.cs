@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyServiceLibrary.Repositories;
 using MyServiceLibrary.Entities;
 using MyServiceLibrary.Interfaces;
-using System.Linq;
 using MyServiceLibrary.Exceptions;
-using System.IO;
 using MyServiceLibrary.Infrastructure.IdGenerators;
 using MyServiceLibrary.Repositories.StateSavers;
 
@@ -20,27 +19,27 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
         [TestInitialize]
         public void Initialize()
         {
-            repository = new UserMemoryRepository(new IdGenerator(), new XmlUserRepositorySaver());
+            this.repository = new UserMemoryRepository(new IdGenerator(), new XmlUserRepositorySaver());
 
-            user = new User()
+            this.user = new User()
             {
                 Id = 1,
                 FirstName = "Petr",
                 LastName = "The greatest",
                 PersonalId = "PiterSaint",
                 DateOfBirth = DateTime.MinValue,
-                Visas = new VisaRecord[] { new VisaRecord() { Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue} },
+                Visas = new VisaRecord[] { new VisaRecord() { Country = "Netherlands", Start = DateTime.MinValue, End = DateTime.MaxValue } },
                 Gender = GenderEnum.Male
             };
 
-            repository.Add(user);
+            this.repository.Add(this.user);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Add_NullUser_ExceptionThrown()
         {
-            repository.Add(null);
+            this.repository.Add(null);
         }
 
         [TestMethod]
@@ -49,9 +48,9 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
             var repository = new UserMemoryRepository();
 
             User u = null;
-            if (repository.Add(user) != null)
+            if (repository.Add(this.user) != null)
             {
-                u = repository.GetByPredicate(us => us.Equals(user)).FirstOrDefault();
+                u = repository.GetByPredicate(us => us.Equals(this.user)).FirstOrDefault();
             }
 
             Assert.IsNotNull(u);
@@ -61,45 +60,45 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
         [ExpectedException(typeof(UserAlreadyExistsException))]
         public void Add_UserWhileAlreadyExists_ExceptionThrow()
         {
-            repository.Add(user);
+            this.repository.Add(this.user);
         }
 
         [TestMethod]
         public void Delete_User_Success()
         {
-            Assert.IsTrue(repository.Delete(user.Id));
+            Assert.IsTrue(this.repository.Delete(this.user.Id));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Delete_InvalidId_ExceptionThrown()
         {
-            repository.Delete(-50);
+            this.repository.Delete(-50);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetByPredicate_NullPredicate_ThrownException()
         {
-            repository.GetByPredicate(null);
+            this.repository.GetByPredicate(null);
         }
 
         [TestMethod]
         public void GetByPredicate_RightPredicate_Users()
         {
-            Assert.IsTrue(repository.GetByPredicate(u => u.FirstName == "Petr").Count > 0);
+            Assert.IsTrue(this.repository.GetByPredicate(u => u.FirstName == "Petr").Count > 0);
         }
 
         [TestMethod]
         public void GetByPredicate_InvalidPredicate_EmptyCollection()
         {
-            Assert.IsTrue(repository.GetByPredicate(u => u.FirstName == "Vasily").Count == 0);
+            Assert.IsTrue(this.repository.GetByPredicate(u => u.FirstName == "Vasily").Count == 0);
         }
 
         [TestMethod]
         public void Save_SaveAll_Success()
         {
-            repository.Add(new User()
+            this.repository.Add(new User()
             {
                 Id = 2,
                 FirstName = "Aliaksandr",
@@ -110,7 +109,7 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
                 Gender = GenderEnum.Male
             });
 
-            repository.Add(new User()
+            this.repository.Add(new User()
             {
                 Id = 3,
                 FirstName = "Petra",
@@ -121,15 +120,15 @@ namespace MyServiceLibrary.Tests.RepositoriesTests
                 Gender = GenderEnum.Female
             });
 
-            repository.Save();
+            this.repository.Save();
         }
 
         [TestMethod]
         public void Load_LoadAll_Success()
         {
-            repository.Load();
+            this.repository.Load();
 
-            Assert.IsTrue(repository.GetAll().Count == 3);
+            Assert.IsTrue(this.repository.GetAll().Count == 3);
         }
     }
 }

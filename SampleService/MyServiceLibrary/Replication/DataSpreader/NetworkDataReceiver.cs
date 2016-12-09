@@ -1,38 +1,45 @@
-﻿using MyServiceLibrary.Entities;
-using MyServiceLibrary.Interfaces.Replication;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MyServiceLibrary.Replication.DataSpreader.States;
+using MyServiceLibrary.Entities;
+using MyServiceLibrary.Interfaces.Replication;
 
 namespace MyServiceLibrary.Replication.DataSpreader
 {
     public class NetworkDataReceiver : IDataSpreader<Message<User>>
     {
         private List<IPEndPoint> ips;
+
         private CancellationTokenSource cancellationToken;
 
-        public string Name { get; }
         public event EventHandler<Message<User>> DataReceived = delegate { };
+
+        public string Name { get; }
 
         public NetworkDataReceiver()
         {
-            ips = new List<IPEndPoint>();
-            Name = GetType().FullName;
+            this.ips = new List<IPEndPoint>();
+            this.Name = GetType().FullName;
         }
 
         public NetworkDataReceiver(string name, params IPEndPoint[] ips)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
             if (ips == null)
+            {
                 throw new ArgumentNullException($"{nameof(ips)} argument is null.");
+            }
 
             this.ips = ips.ToList();
         }
@@ -43,16 +50,16 @@ namespace MyServiceLibrary.Replication.DataSpreader
 
         public void Start()
         {
-            cancellationToken = new CancellationTokenSource();
-            foreach (var ipEndPoint in ips)
+            this.cancellationToken = new CancellationTokenSource();
+            foreach (var ipEndPoint in this.ips)
             {
-                Task.Run(() => StartListening(ipEndPoint, cancellationToken.Token), cancellationToken.Token);
+                Task.Run(() => this.StartListening(ipEndPoint, this.cancellationToken.Token), this.cancellationToken.Token);
             }
         }
 
         public void Stop()
         {
-            cancellationToken?.Cancel();
+            this.cancellationToken?.Cancel();
         }
 
         public void StartListening(IPEndPoint ipEndPoint, CancellationToken cancellationToken)
@@ -71,11 +78,12 @@ namespace MyServiceLibrary.Replication.DataSpreader
                         return;
                     }
 
-                    listener.BeginAccept(AcceptCallback, listener);
+                    listener.BeginAccept(this.AcceptCallback, listener);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                // ignored
             }
         }
 
@@ -86,7 +94,7 @@ namespace MyServiceLibrary.Replication.DataSpreader
 
             var state = new AsyncState<Message<User>> { WorkSocket = handler };
 
-            handler.BeginReceive(state.Buffer, 0, state.BufferSize, 0, ReadCallback, state);
+            handler.BeginReceive(state.Buffer, 0, state.BufferSize, 0, this.ReadCallback, state);
         }
 
         public void ReadCallback(IAsyncResult ar)
@@ -101,7 +109,7 @@ namespace MyServiceLibrary.Replication.DataSpreader
                 state.AllBytes.AddRange(state.Buffer);
 
                 Array.Clear(state.Buffer, 0, state.Buffer.Length);
-                handler.BeginReceive(state.Buffer, 0, state.BufferSize, 0, ReadCallback, state);
+                handler.BeginReceive(state.Buffer, 0, state.BufferSize, 0, this.ReadCallback, state);
             }
             else
             {
@@ -112,7 +120,7 @@ namespace MyServiceLibrary.Replication.DataSpreader
                     stream.Seek(0, SeekOrigin.Begin);
                     var message = (Message<User>)binaryFormatter.Deserialize(stream);
 
-                    Task.Run(() => DataReceived(this, message));
+                    this.DataReceived(this, message);
                 }
             }
         }
