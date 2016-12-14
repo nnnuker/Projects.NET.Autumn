@@ -36,3 +36,7 @@
 /SampleService/WcfServiceHost/obj/Debug
 /SampleService/WcfServiceClient/bin/Debug
 /SampleService/WcfServiceClient/obj/Debug
+/RestWebApi/Bll/obj/Debug
+/RestWebApi/packages
+/RestWebApi/RestWebApi/bin
+/RestWebApi/RestWebApi/obj/Debug
