@@ -40,3 +40,6 @@
 /RestWebApi/packages
 /RestWebApi/RestWebApi/bin
 /RestWebApi/RestWebApi/obj/Debug
+/RestWebApi/Bll/bin/Debug
+/RestWebApi/WebApiClient/bin
+/RestWebApi/WebApiClient/obj/Debug

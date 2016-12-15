@@ -12,42 +12,51 @@ namespace Bll.Services
 {
     public class TodoService : IAsyncService<BllTodoItem>
     {
-        TodoItemsContext db = new TodoItemsContext();
+        private readonly TodoItemsContext db = new TodoItemsContext();
 
-        public Task<BllTodoItem> Add(BllTodoItem item)
+        public async Task<BllTodoItem> Add(BllTodoItem item)
         {
-            throw new NotImplementedException();
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
-            //service.TodoItems.Add(todoItem);
-            //await service.SaveChangesAsync();
+            var result = db.TodoItems.Add(item);
+            await db.SaveChangesAsync();
+
+            return result;
         }
 
         public async Task<BllTodoItem> Get(int id)
         {
-            throw new NotImplementedException();
+            return await db.TodoItems.FindAsync(id);
         }
 
         public async Task<IList<BllTodoItem>> GetAll()
         {
-            throw new NotImplementedException();
+            return await db.TodoItems.ToListAsync();
+        }
+
+        public IList<BllTodoItem> GetAll_()
+        {
+            return db.TodoItems.ToList();
         }
 
         public async Task<BllTodoItem> Remove(int id)
         {
-            throw new NotImplementedException();
+            BllTodoItem todoItem = await db.TodoItems.FindAsync(id);
+            if (todoItem == null)
+            {
+                return null;
+            }
 
-            //TodoItemModel todoItem = await service.TodoItems.FindAsync(id);
-            //if (todoItem == null)
-            //{
-            //    return NotFound();
-            //}
+            var result = db.TodoItems.Remove(todoItem);
+            await db.SaveChangesAsync();
 
-            //service.TodoItems.Remove(todoItem);
-            //await service.SaveChangesAsync();
+            return result;
         }
 
         public async Task<bool> Update(BllTodoItem item)
         {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+
             db.Entry(item).State = EntityState.Modified;
 
             try
@@ -61,10 +70,8 @@ namespace Bll.Services
                 {
                     return false;
                 }
-                else
-                {
-                    throw new ArgumentException(ex.Message, ex);
-                }
+
+                throw new ArgumentException(ex.Message, ex);
             }
         }
 
@@ -74,7 +81,7 @@ namespace Bll.Services
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -82,28 +89,16 @@ namespace Bll.Services
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects).
+                    db.Dispose();
                 }
-
-                db.Dispose();
 
                 disposedValue = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~TodoService() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
         }
         #endregion
     }

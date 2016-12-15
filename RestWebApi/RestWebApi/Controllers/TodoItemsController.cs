@@ -15,12 +15,14 @@ namespace RestWebApi.Controllers
 {
     public class TodoItemsController : ApiController
     {
-        private IAsyncService<BllTodoItem> service = new TodoService();
+        private static readonly TodoService service = new TodoService();
 
         // GET: api/TodoItems
         public async Task<IEnumerable<TodoItemModel>> GetTodoItems()
         {
-            IEnumerable<BllTodoItem> result = await service.GetAll();
+            //var result = service.GetAll_();
+
+            IList<BllTodoItem> result = await service.GetAll();
 
             return result.Select(i => i.ToViewModel());
         }
@@ -40,14 +42,9 @@ namespace RestWebApi.Controllers
 
         // PUT: api/TodoItems/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutTodoItem(int id, TodoItemModel todoItem)
+        public async Task<IHttpActionResult> PutTodoItem(int id, TodoItemModel item)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != todoItem.Id)
+            if (id != item.Id)
             {
                 return BadRequest();
             }
@@ -56,7 +53,7 @@ namespace RestWebApi.Controllers
 
             try
             {
-                result = await service.Update(todoItem.ToBll());
+                result = await service.Update(item.ToBll());
             }
             catch (ArgumentException)
             {
@@ -73,25 +70,22 @@ namespace RestWebApi.Controllers
 
         // POST: api/TodoItems
         [ResponseType(typeof(TodoItemModel))]
-        public async Task<IHttpActionResult> PostTodoItem(TodoItemModel todoItem)
+        public async Task<IHttpActionResult> PostTodoItem(TodoItemModel item)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            item.Created = DateTime.Now;
 
-            BllTodoItem result = await service.Add(todoItem.ToBll());
+            BllTodoItem result = await service.Add(item.ToBll());
 
             if (result == null)
             {
                 return BadRequest(ModelState);
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = todoItem.Id }, result.ToViewModel());
+            return CreatedAtRoute("DefaultApi", new { id = item.Id }, result.ToViewModel());
         }
 
         // DELETE: api/TodoItems/5
-        [ResponseType(typeof(TodoItemModel))]
+        [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> DeleteTodoItem(int id)
         {
             BllTodoItem result = await service.Remove(id);
@@ -101,7 +95,7 @@ namespace RestWebApi.Controllers
                 return NotFound();
             }
 
-            return Ok(result.ToViewModel());
+            return Ok();
         }
     }
 }

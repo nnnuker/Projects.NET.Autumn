@@ -1,0 +1,52 @@
+﻿@model WebApiClient.Models.LoginModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-3">
+                <div class="form-login">
+                    @Html.BeginForm("Login", "Home", FormMethod.Post)
+                    {
+                    <h4>Welcome back.</h4>
+                    <div class="editor-label">
+                        @Html.LabelFor(u => u.Email)
+                    </div>
+                    <div class="editor-field">
+                        >
+                        @Html.TextBoxFor(u => u.Email)
+                        @Html.ValidationMessageFor(u => u.Email)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(u => u.Password)
+                    </div>
+                    <div class="editor-field">
+                        @Html.PasswordFor(u => u.Password)
+                        @Html.ValidationMessageFor(u => u.Password)
+                    </div>
+                    <div class="wrapper">
+                        <span class="group-btn">
+                            <a href="#" class="btn btn-primary btn-md">Login <i class="fa fa-sign-in"></i></a>
+                        </span>
+                    </div>
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
