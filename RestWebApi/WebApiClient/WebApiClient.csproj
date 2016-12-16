@@ -152,8 +152,6 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -161,8 +159,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Authentication\AuthenticationService.cs" />
     <Compile Include="Infrastructure\Authentication\User.cs" />
     <Compile Include="Infrastructure\Authentication\UserPrincipal.cs" />
+    <Compile Include="Infrastructure\Authentication\UserPrincipalSerialized.cs" />
     <Compile Include="Infrastructure\Authentication\UserRepository.cs" />
     <Compile Include="Infrastructure\Authentication\UsersContext.cs" />
     <Compile Include="Infrastructure\Authentication\UsersDBInitializer.cs" />
@@ -174,9 +174,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\web.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

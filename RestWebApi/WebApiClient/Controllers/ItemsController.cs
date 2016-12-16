@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
 using WebApiClient.Infrastructure;
 using WebApiClient.Models;
 
@@ -16,7 +13,7 @@ namespace WebApiClient.Controllers
         private static readonly TodoService service = new TodoService();
 
         // GET: api/Items
-        public async Task<IEnumerable<TodoItemModel>> GetTodoItems()
+        public async Task<IEnumerable<TodoItemModel>> Get()
         {
             IEnumerable<TodoItemModel> result = await service.GetAll();
 
@@ -24,8 +21,7 @@ namespace WebApiClient.Controllers
         }
 
         // GET: api/Items/5
-        [ResponseType(typeof(TodoItemModel))]
-        public async Task<IHttpActionResult> GetTodoItem(int id)
+        public async Task<IHttpActionResult> Get(int id)
         {
             TodoItemModel todoItem = await service.Get(id);
             if (todoItem == null)
@@ -37,8 +33,7 @@ namespace WebApiClient.Controllers
         }
 
         // PUT: api/Items/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutTodoItem(int id, TodoItemModel item)
+        public async Task<IHttpActionResult> Put(int id, TodoItemModel item)
         {
             if (id != item.Id)
             {
@@ -51,8 +46,7 @@ namespace WebApiClient.Controllers
         }
 
         // POST: api/Items
-        [ResponseType(typeof(TodoItemModel))]
-        public async Task<IHttpActionResult> PostTodoItem(TodoItemModel item)
+        public async Task<IHttpActionResult> Post(TodoItemModel item)
         {
             item.Created = DateTime.Now;
 
@@ -67,8 +61,7 @@ namespace WebApiClient.Controllers
         }
 
         // DELETE: api/Items/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> DeleteTodoItem(int id)
+        public async Task<IHttpActionResult> Delete(int id)
         {
             await service.RemoveItem(id);
 

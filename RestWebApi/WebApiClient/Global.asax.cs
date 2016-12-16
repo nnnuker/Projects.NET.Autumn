@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
@@ -15,6 +13,7 @@ namespace WebApiClient
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
 
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
@@ -27,7 +26,7 @@ namespace WebApiClient
 
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
 
-                UserPrincipal serializeModel = serializer.Deserialize<UserPrincipal>(authTicket.UserData);
+                UserPrincipalSerialized serializeModel = serializer.Deserialize<UserPrincipalSerialized>(authTicket.UserData);
 
                 UserPrincipal newUser = new UserPrincipal(authTicket.Name)
                 {

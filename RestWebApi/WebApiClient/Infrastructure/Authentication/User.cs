@@ -1,4 +1,6 @@
-﻿namespace WebApiClient.Infrastructure.Authentication
+﻿using System;
+
+namespace WebApiClient.Infrastructure.Authentication
 {
     public class User
     {

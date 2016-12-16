@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using RestWebApi.Models;
-using Bll.Interfaces;
 using Bll.Entities;
 using Bll.Services;
 using RestWebApi.Infrastructure;
@@ -28,7 +27,6 @@ namespace RestWebApi.Controllers
         }
 
         // GET: api/TodoItems/5
-        [ResponseType(typeof(TodoItemModel))]
         public async Task<IHttpActionResult> GetTodoItem(int id)
         {
             BllTodoItem todoItem = await service.Get(id);
@@ -70,7 +68,7 @@ namespace RestWebApi.Controllers
 
         // POST: api/TodoItems
         [ResponseType(typeof(TodoItemModel))]
-        public async Task<IHttpActionResult> PostTodoItem(TodoItemModel item)
+        public async Task<IHttpActionResult> Post(TodoItemModel item)
         {
             item.Created = DateTime.Now;
 
@@ -86,7 +84,7 @@ namespace RestWebApi.Controllers
 
         // DELETE: api/TodoItems/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> DeleteTodoItem(int id)
+        public async Task<IHttpActionResult> Delete(int id)
         {
             BllTodoItem result = await service.Remove(id);
 

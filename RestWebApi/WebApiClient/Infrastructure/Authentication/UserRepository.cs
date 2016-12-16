@@ -5,7 +5,7 @@ namespace WebApiClient.Infrastructure.Authentication
 {
     public class UserRepository
     {
-        private readonly UsersContext usersContext = new UsersContext();
+        private static readonly UsersContext usersContext = new UsersContext();
 
         public async Task<User> GetUser(string email)
         {
